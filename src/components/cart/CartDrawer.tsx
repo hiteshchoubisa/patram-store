@@ -1,6 +1,7 @@
 "use client";
 import { useCart } from "./CartProvider";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function CartDrawer() {
   const { open, setOpen, lines, updateQty, remove, clear, total, count } = useCart();
@@ -8,6 +9,34 @@ export default function CartDrawer() {
 
   // Debug cart state
   console.log('Cart state:', { lines: lines.length, total, open, count });
+
+  // Lock body scroll when cart is open
+  useEffect(() => {
+    if (open) {
+      // Store the current scroll position
+      const scrollY = window.scrollY;
+      
+      // Add CSS class to prevent scrolling
+      document.body.classList.add('body-scroll-lock');
+      document.body.style.top = `-${scrollY}px`;
+      
+      return () => {
+        // Remove CSS class and restore scroll position when cart closes
+        document.body.classList.remove('body-scroll-lock');
+        document.body.style.top = '';
+        window.scrollTo(0, scrollY);
+      };
+    }
+  }, [open]);
+
+  // Cleanup effect to ensure scroll lock is removed on unmount
+  useEffect(() => {
+    return () => {
+      // Cleanup on unmount
+      document.body.classList.remove('body-scroll-lock');
+      document.body.style.top = '';
+    };
+  }, []);
 
   return (
     <>
@@ -50,7 +79,15 @@ export default function CartDrawer() {
                 <>
                
                   {/* Cart Items */}
-                  <div className="flex-1 overflow-y-auto">
+                  <div className={`flex-1 overflow-y-auto cart-scrollable relative ${lines.length > 3 ? 'max-h-96' : ''}`}>
+                    {lines.length > 3 && (
+                      <>
+                        <div className="text-center py-2 text-xs text-gray-500 bg-gray-50 border-b border-gray-100">
+                          Scroll to see more items ({lines.length} total)
+                        </div>
+                        <div className="absolute top-0 left-0 right-0 h-4 bg-gradient-to-b from-white to-transparent pointer-events-none z-10"></div>
+                      </>
+                    )}
                     {lines.map(l => (
                       <div key={l.id} className="p-4 border-b border-gray-100">
                         <div className="flex gap-4">
@@ -106,6 +143,14 @@ export default function CartDrawer() {
                         </div>
                       </div>
                     ))}
+                    {lines.length > 3 && (
+                      <>
+                        <div className="absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t from-white to-transparent pointer-events-none z-10"></div>
+                        <div className="text-center py-2 text-xs text-gray-500 bg-gray-50 border-t border-gray-100">
+                          ↑ Scroll up to see all items
+                        </div>
+                      </>
+                    )}
                   </div>
                 </>
               )}

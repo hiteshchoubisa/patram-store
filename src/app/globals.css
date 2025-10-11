@@ -142,6 +142,7 @@ body {
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(4px);
   height: 100vh;
+  touch-action: none;
 }
 
 .cart-drawer {
@@ -387,6 +388,42 @@ body {
 
 .scrollbar-hide::-webkit-scrollbar {
   display: none;  /* Chrome, Safari and Opera */
+}
+
+/* Custom scrollbar for cart items */
+.cart-scrollable {
+  scrollbar-width: thin;
+  scrollbar-color: #CBD5E0 #F7FAFC;
+}
+
+.cart-scrollable::-webkit-scrollbar {
+  width: 6px;
+}
+
+.cart-scrollable::-webkit-scrollbar-track {
+  background: #F7FAFC;
+  border-radius: 3px;
+}
+
+.cart-scrollable::-webkit-scrollbar-thumb {
+  background: #CBD5E0;
+  border-radius: 3px;
+}
+
+.cart-scrollable::-webkit-scrollbar-thumb:hover {
+  background: #A0AEC0;
+}
+
+/* Body scroll lock when cart is open */
+.body-scroll-lock {
+  position: fixed !important;
+  width: 100% !important;
+  overflow: hidden !important;
+}
+
+/* Prevent scroll on touch devices when cart is open */
+.cart-overlay {
+  touch-action: none;
 }
 
 /* Dark mode styles */

@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCustomerAuth } from '@/contexts/CustomerAuthContext';
 import { supabase } from '@/lib/supabaseClient';
+import { getOrderDisplayNumber } from '@/lib/orderNumber';
 
 // Component to handle product name and category display with fallback
 const ProductName = ({ item }: { item: OrderItem }) => {
@@ -171,6 +172,7 @@ interface OrderItem {
 
 interface Order {
   id: string;
+  order_number?: string; // Add order_number field
   client: string;
   order_date: string;
   status: string;
@@ -202,23 +204,43 @@ export default function OrdersPage() {
   const loadOrders = async () => {
     try {
       setLoading(true);
-      const { data, error } = await supabase
+      console.log("Loading orders for customer:", customer?.name);
+      
+      // First, let's debug what orders exist in the database
+      try {
+        const debugResponse = await fetch("/api/debug-orders");
+        if (debugResponse.ok) {
+          const debugData = await debugResponse.json();
+          console.log("Debug orders data:", debugData);
+        }
+      } catch (debugError) {
+        console.error("Debug orders error:", debugError);
+      }
+      
+      // Try multiple ways to match orders
+      let { data, error } = await supabase
         .from('orders')
         .select('*')
-        .eq('client', customer?.name)
+        .or(`client.eq.${customer?.name},client.eq.${customer?.email}`)
         .order('created_at', { ascending: false });
 
       if (error) {
+        console.error("Orders query error:", error);
         throw error;
       }
 
+      console.log("Found orders:", data?.length || 0);
       setOrders(data || []);
       
       // Debug the order data
       if (data && data.length > 0) {
         debugOrderData(data);
+      } else {
+        console.log("No orders found. Customer name:", customer?.name);
+        console.log("Customer email:", customer?.email);
       }
     } catch (err: any) {
+      console.error("Load orders error:", err);
       setError(err.message || 'Failed to load orders');
     } finally {
       setLoading(false);
@@ -327,9 +349,30 @@ export default function OrdersPage() {
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">My Orders</h1>
-          <p className="mt-2 text-gray-600">Track and manage your orders</p>
+        <div className="mb-8 flex justify-between items-center">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">My Orders</h1>
+            <p className="mt-2 text-gray-600">Track and manage your orders</p>
+          </div>
+          <button
+            onClick={loadOrders}
+            disabled={loading}
+            className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
+          >
+            {loading ? (
+              <>
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-400 mr-2"></div>
+                Loading...
+              </>
+            ) : (
+              <>
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                Refresh
+              </>
+            )}
+          </button>
         </div>
 
         {error && (
@@ -345,7 +388,13 @@ export default function OrdersPage() {
             </svg>
             <h3 className="mt-2 text-sm font-medium text-gray-900">No orders found</h3>
             <p className="mt-1 text-sm text-gray-500">You haven't placed any orders yet.</p>
-            <div className="mt-6">
+            <div className="mt-6 space-x-4">
+              <button
+                onClick={loadOrders}
+                className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+              >
+                Refresh Orders
+              </button>
               <a
                 href="/shop"
                 className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
@@ -362,7 +411,7 @@ export default function OrdersPage() {
                   <div className="flex items-center justify-between">
                     <div>
                       <h3 className="text-lg font-medium text-gray-900">
-                        Order #{order.id.slice(-8).toUpperCase()}
+                        Order {getOrderDisplayNumber(order.order_number, order.id)}
                       </h3>
                       <p className="text-sm text-gray-500">
                         Placed on {formatDate(order.created_at)}

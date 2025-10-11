@@ -13,6 +13,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
   const { add } = useCart();
   const router = useRouter();
   const [quantity, setQuantity] = useState(1);
+  const [addedToCart, setAddedToCart] = useState(false);
 
   // Get product images from database, with fallback to photo_url
   const getProductImages = () => {
@@ -42,7 +43,9 @@ export default function ProductDetail({ product }: ProductDetailProps) {
       price: product.price,
       qty: quantity,
       photo: product.photo
-    });
+    }, false); // false = don't open cart popup
+    setAddedToCart(true);
+    setTimeout(() => setAddedToCart(false), 2000); // Reset after 2 seconds
   };
 
   const handleBuyNow = () => {
@@ -146,9 +149,13 @@ export default function ProductDetail({ product }: ProductDetailProps) {
             <div className="space-y-4">
               <button
                 onClick={handleAddToCart}
-                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-4 px-6 rounded-lg transition-colors duration-200"
+                className={`w-full font-semibold py-4 px-6 rounded-lg transition-all duration-200 ${
+                  addedToCart 
+                    ? 'bg-green-600 text-white' 
+                    : 'bg-indigo-600 hover:bg-indigo-700 text-white'
+                }`}
               >
-                Add to Cart
+                {addedToCart ? '✓ Added to Cart' : 'Add to Cart'}
               </button>
               <button 
                 onClick={handleBuyNow}
