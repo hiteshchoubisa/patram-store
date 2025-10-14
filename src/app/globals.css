@@ -12,12 +12,7 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* Dark mode disabled for mobile view */
 
 body {
   background: var(--background);
@@ -426,48 +421,7 @@ body {
   touch-action: none;
 }
 
-/* Dark mode styles */
-@media (prefers-color-scheme: dark) {
-  .cart-drawer {
-    @apply bg-gray-900;
-  }
-  
-  .cart-header {
-    @apply bg-gradient-to-r from-gray-800 to-gray-900 border-gray-700;
-  }
-  
-  .cart-title {
-    @apply text-white;
-  }
-  
-  .cart-close {
-    @apply hover:bg-gray-700 text-gray-300;
-  }
-  
-  .cart-item {
-    @apply border-gray-700 hover:bg-gray-800;
-  }
-  
-  .cart-item-name {
-    @apply text-white;
-  }
-  
-  .cart-item-price {
-    @apply text-indigo-400;
-  }
-  
-  .cart-qty-input {
-    @apply bg-gray-800 border-gray-600 text-white;
-  }
-  
-  .cart-footer {
-    @apply bg-gray-800 border-gray-700;
-  }
-  
-  .cart-total {
-    @apply text-white;
-  }
-}
+/* Dark mode styles removed for mobile view */
 
 /* Checkout Page Styles */
 .checkout-title {
@@ -590,82 +544,7 @@ body {
   @apply flex justify-between text-lg font-bold text-gray-900 pt-2 border-t border-gray-200;
 }
 
-/* Dark mode styles for checkout */
-@media (prefers-color-scheme: dark) {
-  .checkout-title {
-    @apply text-white;
-  }
-  
-  .checkout-subtitle {
-    @apply text-gray-400;
-  }
-  
-  .checkout-form-container,
-  .checkout-summary {
-    @apply bg-gray-900 border-gray-700;
-  }
-  
-  .checkout-section-title {
-    @apply text-white border-gray-700;
-  }
-  
-  .checkout-label {
-    @apply text-gray-300;
-  }
-  
-  .checkout-input,
-  .checkout-textarea {
-    @apply bg-gray-800 border-gray-600 text-white;
-  }
-  
-  .payment-label {
-    @apply border-gray-600 hover:border-indigo-400;
-  }
-  
-  .payment-radio:checked + .payment-label {
-    @apply border-indigo-500 bg-indigo-900;
-  }
-  
-  .payment-icon {
-    @apply bg-gray-700;
-  }
-  
-  .payment-radio:checked + .payment-label .payment-icon {
-    @apply bg-indigo-800 text-indigo-300;
-  }
-  
-  .payment-title {
-    @apply text-white;
-  }
-  
-  .payment-description {
-    @apply text-gray-400;
-  }
-  
-  .checkout-item {
-    @apply bg-gray-800;
-  }
-  
-  .checkout-item-name {
-    @apply text-white;
-  }
-  
-  .checkout-item-qty {
-    @apply text-gray-400;
-  }
-  
-  .checkout-item-price {
-    @apply text-white;
-  }
-  
-  .checkout-total-row {
-    @apply text-gray-400;
-  }
-  
-  .checkout-total-final {
-    @apply text-white border-gray-700;
-  }
-}
+/* Dark mode styles for checkout removed for mobile view */
 
 /* Mobile Menu Styles */
 .mobile-menu-overlay {
