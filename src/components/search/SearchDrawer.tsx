@@ -111,7 +111,7 @@ export default function SearchDrawer({ open, onClose }: SearchDrawerProps) {
       console.log("📦 Total products in database:", allProducts?.length);
 
       // Filter products that match search query
-      const filteredProducts = (allProducts || []).filter(product => {
+      const filteredProducts = (allProducts || []).filter((product: any) => {
         const searchTerm = searchQuery.toLowerCase();
         const productName = product.name.toLowerCase();
         
@@ -128,7 +128,7 @@ export default function SearchDrawer({ open, onClose }: SearchDrawerProps) {
       });
 
       console.log("✅ Filtered results:", filteredProducts.length);
-      console.log("📋 Found products:", filteredProducts.map(p => p.name));
+      console.log("📋 Found products:", filteredProducts.map((p: any) => p.name));
       
       setProducts(filteredProducts.slice(0, 15));
     } catch (error) {
