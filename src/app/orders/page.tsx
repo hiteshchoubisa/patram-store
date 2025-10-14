@@ -5,18 +5,16 @@ import { useCustomerAuth } from '@/contexts/CustomerAuthContext';
 import { supabase } from '@/lib/supabaseClient';
 import { getOrderDisplayNumber } from '@/lib/orderNumber';
 
-// Component to handle product name and category display with fallback
+// Component to handle product name display with fallback
 const ProductName = ({ item }: { item: OrderItem }) => {
   const [productName, setProductName] = useState<string>(item.product_name || '');
-  const [productCategory, setProductCategory] = useState<string>(item.category || '');
-  const [isLoading, setIsLoading] = useState(!item.product_name || !item.category);
+  const [isLoading, setIsLoading] = useState(!item.product_name);
 
   useEffect(() => {
     const fetchProductDetails = async () => {
-      // If we have both name and category, no need to fetch
-      if (item.product_name && item.category) {
+      // If we have the product name, no need to fetch
+      if (item.product_name) {
         setProductName(item.product_name);
-        setProductCategory(item.category);
         setIsLoading(false);
         return;
       }
@@ -24,28 +22,25 @@ const ProductName = ({ item }: { item: OrderItem }) => {
       try {
         const { data, error } = await supabase
           .from('products')
-          .select('name, category')
+          .select('name')
           .eq('id', item.productId)
           .single();
         
         if (!error && data) {
           setProductName(data.name || item.product_name || 'Product');
-          setProductCategory(data.category || item.category || '');
         } else {
           setProductName(item.product_name || 'Product');
-          setProductCategory(item.category || '');
         }
       } catch (error) {
         console.error('Error fetching product details:', error);
         setProductName(item.product_name || 'Product');
-        setProductCategory(item.category || '');
       }
       
       setIsLoading(false);
     };
 
     fetchProductDetails();
-  }, [item.productId, item.product_name, item.category]);
+  }, [item.productId, item.product_name]);
 
   if (isLoading) {
     return (
@@ -63,11 +58,6 @@ const ProductName = ({ item }: { item: OrderItem }) => {
       <h4 className="text-sm font-medium text-gray-900 truncate">
         {productName}
       </h4>
-      {productCategory && (
-        <p className="text-xs text-blue-600 font-medium mt-1">
-          {productCategory}
-        </p>
-      )}
     </div>
   );
 };

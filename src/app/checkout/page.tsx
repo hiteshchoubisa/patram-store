@@ -255,7 +255,7 @@ export default function CheckoutPage() {
         console.error("Failed to parse error response:", parseError);
         errorData = { 
           message: "Failed to parse error response",
-          parseError: parseError.message,
+          parseError: parseError instanceof Error ? parseError.message : String(parseError),
           status: response.status,
           statusText: response.statusText
         };

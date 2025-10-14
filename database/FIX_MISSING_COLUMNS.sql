@@ -33,11 +33,7 @@ ADD COLUMN IF NOT EXISTS payment_method VARCHAR(50);
 ALTER TABLE public.orders 
 ADD COLUMN IF NOT EXISTS payment_status VARCHAR(50);
 
-ALTER TABLE public.orders 
-ADD COLUMN IF NOT EXISTS payment_id VARCHAR(255);
-
-ALTER TABLE public.orders 
-ADD COLUMN IF NOT EXISTS razorpay_order_id VARCHAR(255);
+-- Removed Razorpay columns - only COD is supported
 
 -- Step 3: Set default values for existing orders
 UPDATE public.orders 
