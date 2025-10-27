@@ -5,6 +5,7 @@ import Footer from "../components/layout/Footer";
 import { CartProvider } from "../components/cart/CartProvider";
 import { CustomerAuthProvider } from "../contexts/CustomerAuthContext";
 import type { Metadata } from "next";
+import WhatsAppSupportBadge from "../components/support/WhatsAppSupportBadge";
 
 export const metadata: Metadata = {
   title: {
@@ -38,6 +39,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Footer />
           </CartProvider>
         </CustomerAuthProvider>
+        <WhatsAppSupportBadge />
       </body>
     </html>
   );

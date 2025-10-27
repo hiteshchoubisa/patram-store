@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabaseClient";
+import { WhatsAppService } from "@/lib/whatsappService";
 
 interface OrderItem {
   product_id: string;
@@ -161,6 +162,38 @@ export async function POST(request: NextRequest) {
     }
     
     console.log("Order saved successfully:", data);
+    
+    // Send WhatsApp confirmation message
+    if (orderData.shippingAddress?.phone && data.order_number) {
+      try {
+        const whatsappData = {
+          orderNumber: data.order_number,
+          customerName: orderData.shippingAddress.name,
+          total: calculatedTotal,
+          items: formattedItems.map(item => ({
+            name: item.product_name || 'Product',
+            quantity: item.qty,
+            price: item.price || 0
+          })),
+          status: 'Pending',
+          shippingAddress: orderInsertData.message
+        };
+
+        const whatsappSent = await WhatsAppService.sendOrderConfirmation(
+          whatsappData, 
+          orderData.shippingAddress.phone
+        );
+
+        if (whatsappSent) {
+          console.log("WhatsApp confirmation message sent successfully");
+        } else {
+          console.log("Failed to send WhatsApp confirmation message");
+        }
+      } catch (whatsappError) {
+        console.error("Error sending WhatsApp message:", whatsappError);
+        // Don't fail the order if WhatsApp fails
+      }
+    }
     
     // Update client information if phone number exists
     if (orderData.shippingAddress?.phone) {

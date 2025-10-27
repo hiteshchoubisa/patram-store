@@ -2,6 +2,9 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState, Suspense } from "react";
 import Link from "next/link";
+import ContactInfo from '@/components/order/ContactInfo';
+import CustomerInfo from '@/components/order/CustomerInfo';
+import OrderSummary from '@/components/order/OrderSummary';
 
 interface OrderDetails {
   id: string;
@@ -10,10 +13,13 @@ interface OrderDetails {
   status: string;
   total: number;
   items: Array<{
-    product_name: string;
-    product_image: string;
     qty: number;
-    price: number;
+    kind: string;
+    productId?: string;
+    product_name?: string;
+    product_image?: string;
+    price?: number;
+    name?: string;
   }>;
   client: string;
   message: string;
@@ -165,157 +171,22 @@ function ThankYouContent() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Order Summary */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-6">Order Summary</h2>
-              
-              {/* Order Number */}
-              <div className="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                <h3 className="text-sm font-medium text-blue-900 mb-3">Order Number</h3>
-                <div className="flex items-center gap-2">
-                  <p className="text-2xl font-bold text-blue-900">
-                    {orderDetails.order_number || 'Not assigned'}
-                  </p>
-                  {orderDetails.order_number && (
-                    <button
-                      onClick={() => {
-                        if (orderDetails.order_number) {
-                          navigator.clipboard.writeText(orderDetails.order_number);
-                          // You could add a toast notification here
-                        }
-                      }}
-                      className="text-blue-600 hover:text-blue-800 text-xs px-2 py-1 border border-blue-300 rounded hover:bg-blue-50"
-                      title="Copy Order Number"
-                    >
-                      Copy
-                    </button>
-                  )}
-                </div>
-                {orderDetails.order_number && (
-                  <p className="text-xs text-blue-700 mt-2">
-                    ✓ Your order reference number
-                  </p>
-                )}
-                {!orderDetails.order_number && (
-                  <p className="text-xs text-yellow-700 mt-2">
-                    ⚠ Order number not yet assigned
-                  </p>
-                )}
-              </div>
-
-              {/* Order Status */}
-              <div className="mb-6">
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <h3 className="text-sm font-medium text-gray-500 mb-1">Status</h3>
-                  <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-                    orderDetails.status === 'Pending' 
-                      ? 'bg-yellow-100 text-yellow-800' 
-                      : orderDetails.status === 'Confirmed'
-                      ? 'bg-green-100 text-green-800'
-                      : 'bg-blue-100 text-blue-800'
-                  }`}>
-                    {orderDetails.status || 'Unknown'}
-                  </span>
-                </div>
-              </div>
-
-              {/* Order Items */}
-              <div className="mb-6">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Items Ordered</h3>
-                <div className="space-y-4">
-                  {orderDetails.items && orderDetails.items.length > 0 ? (
-                    orderDetails.items.map((item, index) => (
-                    <div key={index} className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
-                      <div className="w-16 h-16 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0">
-                        {item.product_image ? (
-                          <img 
-                            src={item.product_image} 
-                            alt={item.product_name}
-                            className="w-full h-full object-cover"
-                          />
-                        ) : (
-                          <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                            <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                            </svg>
-                          </div>
-                        )}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h4 className="text-sm font-medium text-gray-900 truncate">{item.product_name}</h4>
-                        <p className="text-sm text-gray-500">Quantity: {item.qty}</p>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-sm font-medium text-gray-900">₹{item.price ? item.price.toLocaleString("en-IN") : '0'}</p>
-                        <p className="text-xs text-gray-500">per item</p>
-                      </div>
-                    </div>
-                    ))
-                  ) : (
-                    <div className="text-center py-8 text-gray-500">
-                      <p>No items found for this order.</p>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Total */}
-              <div className="border-t border-gray-200 pt-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-lg font-medium text-gray-900">Total Amount</span>
-                  <span className="text-2xl font-bold text-indigo-600">
-                    ₹{(() => {
-                      // Use stored total if available, otherwise calculate from items
-                      if (orderDetails.total) {
-                        return orderDetails.total.toLocaleString("en-IN");
-                      }
-                      // Calculate total from items
-                      if (orderDetails.items && orderDetails.items.length > 0) {
-                        const calculatedTotal = orderDetails.items.reduce((sum, item) => {
-                          return sum + (item.price * item.qty);
-                        }, 0);
-                        return calculatedTotal.toLocaleString("en-IN");
-                      }
-                      return '0';
-                    })()}
-                  </span>
-                </div>
-              </div>
-            </div>
+            <OrderSummary 
+              orderNumber={orderDetails.order_number}
+              status={orderDetails.status}
+              items={orderDetails.items}
+              total={orderDetails.total}
+            />
           </div>
 
           {/* Order Details & Next Steps */}
           <div className="space-y-6">
             {/* Customer Information */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Customer Information</h3>
-              <div className="space-y-3">
-                <div>
-                  <span className="text-sm font-medium text-gray-500">Customer Name</span>
-                  <p className="text-gray-900">{orderDetails.client || 'N/A'}</p>
-                </div>
-                <div>
-                  <span className="text-sm font-medium text-gray-500">Order Date</span>
-                  <p className="text-gray-900">
-                    {orderDetails.order_date 
-                      ? new Date(orderDetails.order_date).toLocaleDateString('en-IN', {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric',
-                          hour: '2-digit',
-                          minute: '2-digit'
-                        })
-                      : 'N/A'
-                    }
-                  </p>
-                </div>
-                {orderDetails.message && (
-                  <div>
-                    <span className="text-sm font-medium text-gray-500">Shipping Address</span>
-                    <p className="text-gray-900 text-sm">{orderDetails.message}</p>
-                  </div>
-                )}
-              </div>
-            </div>
+            <CustomerInfo 
+              client={orderDetails.client}
+              orderDate={orderDetails.order_date}
+              shippingAddress={orderDetails.message}
+            />
 
             {/* Next Steps */}
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
@@ -343,17 +214,7 @@ function ThankYouContent() {
             </div>
 
             {/* Contact Information */}
-            <div className="bg-gray-50 rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Need Help?</h3>
-              <div className="space-y-3 text-sm text-gray-600">
-                <p>If you have any questions about your order, please contact us:</p>
-                <div className="space-y-2">
-                  <p><strong>Phone:</strong> +91-1234567890</p>
-                  <p><strong>Email:</strong> support@patramstore.com</p>
-                  <p><strong>Order Number:</strong> {orderDetails.order_number || 'Not assigned'}</p>
-                </div>
-              </div>
-            </div>
+            <ContactInfo orderNumber={orderDetails.order_number} />
 
             {/* Action Buttons */}
             <div className="space-y-3">

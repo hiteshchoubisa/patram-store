@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import MainNav from "../navigation/MainNav";
 import CartDrawer from "../cart/CartDrawer";
 import SearchDrawer from "../search/SearchDrawer";
@@ -37,7 +38,16 @@ export default function Header() {
     <header className="border-b bg-white/90 backdrop-blur sticky top-0 z-40">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between gap-6">
         {/* Logo */}
-        <a href="/" className="font-semibold text-lg">Patram</a>
+        <a href="/" className="flex items-center" aria-label="Patram Home">
+          <Image
+            src="/logo-1.svg"
+            alt="Patram"
+            width={120}
+            height={32}
+            priority
+            className="h-9 w-auto"
+          />
+        </a>
         
         {/* Desktop Navigation */}
         <MainNav />
@@ -54,7 +64,7 @@ export default function Header() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </button>
-
+ 
           {/* User Icon */}
           {isAuthenticated ? (
             <div className="relative" ref={userDropdownRef}>
@@ -158,6 +168,7 @@ export default function Header() {
               <a href="/about" className="mobile-menu-link" onClick={() => setIsMobileMenuOpen(false)}>About</a>
               <a href="/shop" className="mobile-menu-link" onClick={() => setIsMobileMenuOpen(false)}>Shop</a>
               <a href="/contact" className="mobile-menu-link" onClick={() => setIsMobileMenuOpen(false)}>Contact</a>
+              <a href="/track-order" className="mobile-menu-link" onClick={() => setIsMobileMenuOpen(false)}>Track Order</a>
               
               {isAuthenticated ? (
                 <>

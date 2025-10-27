@@ -410,41 +410,10 @@ export default function CheckoutPage() {
               
               {/* Personal Information */}
               <div className="checkout-section">
-                <h2 className="checkout-section-title">Personal Information</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="checkout-label">
-                      Full Name <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={form.name}
-                      onChange={(e) => handleInputChange("name", e.target.value)}
-                      className={`checkout-input ${fieldErrors.name ? 'border-red-500 focus:border-red-500' : isFieldEmpty('name') ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-indigo-500'}`}
-                      placeholder="Enter your full name"
-                    />
-                    {fieldErrors.name && (
-                      <p className="mt-1 text-sm text-red-600">{fieldErrors.name}</p>
-                    )}
-                  </div>
-                  <div>
-                    <label className="checkout-label">
-                      Email <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="email"
-                      required
-                      value={form.email}
-                      onChange={(e) => handleInputChange("email", e.target.value)}
-                      className={`checkout-input ${fieldErrors.email ? 'border-red-500 focus:border-red-500' : isFieldEmpty('email') ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-indigo-500'}`}
-                      placeholder="Enter your email"
-                    />
-                    {fieldErrors.email && (
-                      <p className="mt-1 text-sm text-red-600">{fieldErrors.email}</p>
-                    )}
-                  </div>
-                  <div>
+                <h2 className="checkout-section-title">Already a Member? <br/><small>We’ll auto-fill your details using your phone number.</small></h2>
+                
+                <div className="grid   gap-4">
+                <div>
                     <label className="checkout-label">
                       Phone Number <span className="text-red-500">*</span>
                     </label>
@@ -482,12 +451,46 @@ export default function CheckoutPage() {
                       </p>
                     )}
                   </div>
+                 
+                  
                 </div>
               </div>
 
               {/* Shipping Address */}
               <div className="checkout-section">
-                <h2 className="checkout-section-title">Shipping Address</h2>
+                <h2 className="checkout-section-title">Personal Details</h2>
+                <div>
+                    <label className="checkout-label">
+                      Full Name <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={form.name}
+                      onChange={(e) => handleInputChange("name", e.target.value)}
+                      className={`checkout-input ${fieldErrors.name ? 'border-red-500 focus:border-red-500' : isFieldEmpty('name') ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-indigo-500'}`}
+                      placeholder="Enter your full name"
+                    />
+                    {fieldErrors.name && (
+                      <p className="mt-1 text-sm text-red-600">{fieldErrors.name}</p>
+                    )}
+                  </div>
+                  <div>
+                    <label className="checkout-label">
+                      Email <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      value={form.email}
+                      onChange={(e) => handleInputChange("email", e.target.value)}
+                      className={`checkout-input ${fieldErrors.email ? 'border-red-500 focus:border-red-500' : isFieldEmpty('email') ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-indigo-500'}`}
+                      placeholder="Enter your email"
+                    />
+                    {fieldErrors.email && (
+                      <p className="mt-1 text-sm text-red-600">{fieldErrors.email}</p>
+                    )}
+                  </div>
                 <div className="space-y-4">
                   <div>
                     <label className="checkout-label">
@@ -587,8 +590,9 @@ export default function CheckoutPage() {
             </form>
           </div>
 
-          {/* Order Summary */}
-          <div className="checkout-summary">
+          <div>
+{/* Order Summary */}
+<div className="checkout-summary">
             <h2 className="checkout-summary-title">Order Summary</h2>
             <div className="checkout-items">
               {lines.map((item) => (
@@ -627,10 +631,11 @@ export default function CheckoutPage() {
                 <span>₹{total.toLocaleString("en-IN")}</span>
               </div>
             </div>
-          </div>
 
-          {/* Payment Method & Place Order */}
-          <div className="checkout-summary">
+            
+          </div>
+ {/* Payment Method & Place Order */}
+ <div className="checkout-summary">
             <h2 className="checkout-summary-title">Payment Method</h2>
             
             {/* Location-based payment info */}
@@ -650,7 +655,7 @@ export default function CheckoutPage() {
 
             <div className="space-y-4">
               {getAvailablePaymentMethods().map((method) => (
-                <div key={method.id} className="payment-option">
+                <div key={method.id} className="payment-option mb-4">
                   <input
                     type="radio"
                     id={method.id}
@@ -692,6 +697,8 @@ export default function CheckoutPage() {
               )}
             </button>
           </div>
+          </div>
+         
         </div>
       </div>
     </div>
