@@ -33,14 +33,10 @@ function ThankYouContent() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const orderId = searchParams.get('orderId');
-    
-    if (orderId) {
-      fetchOrderDetails(orderId);
-    } else {
-      setError("No order ID provided");
-      setLoading(false);
-    }
+    if (!searchParams) return;
+    const orderId = searchParams.get("orderId");
+    if (!orderId) return;
+    fetchOrderDetails(orderId);
   }, [searchParams]);
 
   const fetchOrderDetails = async (orderId: string) => {
