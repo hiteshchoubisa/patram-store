@@ -2,6 +2,8 @@ import { getFeaturedProducts, getLatestProducts } from "../lib/products";
 import ProductCarousel from "../components/product/ProductCarousel";
 import ProductCard from "../components/product/ProductCard";
 import JsonLd from "../components/seo/JsonLd";
+import Image from "next/image";
+ 
 
 export const revalidate = 300;
 
@@ -11,113 +13,146 @@ export default async function HomePage() {
     getLatestProducts(12)
   ]);
 
+  // Fetch a larger pool to build category sections
+  const categoryPool = await getLatestProducts(120);
+
+  const byCategory = (() => {
+    const groups = { dhoop: [] as typeof categoryPool, incense: [] as typeof categoryPool, attar: [] as typeof categoryPool, others: [] as typeof categoryPool };
+    for (const p of categoryPool) {
+      const raw = (p.category || '');
+      const c = raw.trim().toLowerCase();
+
+      const isDhoop = /dhoop/.test(c);                       // matches 'dhoop', 'dhoop sticks'
+      const isIncense = /(incense|agarbatti)/.test(c);       // matches 'incense', 'incense sticks', 'agarbatti'
+      const isAttar = /attar/.test(c);                       // matches 'attar', 'attar oil'
+
+      if (isDhoop) groups.dhoop.push(p);
+      else if (isIncense) groups.incense.push(p);
+      else if (isAttar) groups.attar.push(p);
+      else groups.others.push(p);
+    }
+    return groups;
+  })();
+
+  // Remove specific products by name (case-insensitive)
+  const excluded = ["bheem seni", "patram silver 200gm"];
+  const filteredFeatured = featured.filter(p => !excluded.includes(p.name.toLowerCase()));
+
   return (
     <>
-      <section className="relative bg-gradient-to-r from-indigo-600 to-fuchsia-600 text-white">
-        <div className="max-w-6xl mx-auto px-6 py-24">
-          <h1 className="text-4xl md:text-5xl font-bold">Discover Quality Products</h1>
-          <p className="mt-4 max-w-xl text-lg opacity-90">Curated items delivered with speed and trust.</p>
-          <div className="mt-8 flex gap-4">
-            <a href="/shop" className="bg-white text-indigo-700 px-5 py-3 rounded-md text-sm font-medium">Shop Now</a>
-            <a href="/about" className="border border-white/40 px-5 py-3 rounded-md text-sm font-medium hover:bg-white/10">Learn More</a>
+      <section className="bg-banner">
+        <div className="banner-section">
+          <div className="flex flex-col justify-center items-start py-20">
+            <h1 className="heading1">Make Environment <br/><strong>Aromatic & Safe
+            </strong></h1>
+            <p className="mt-4 max-w-xl text-lg">Our Insence and Dhoop sticks are not only serving aroma, but also killing bacteria to safe our environment.</p>
+            <div className="mt-8 flex gap-4">
+              <a href="/shop" className="btn btn-primary">Shop Now</a>
+            </div>
           </div>
+          <Image
+                    src="/banner-patram.png"
+                    alt="Patram"
+                    width={580}
+                    height={530}
+                    priority
+                    className="banner-img "
+                  />
         </div>
       </section>
 
       {/* Categories Section */}
-      <section className="max-w-6xl mx-auto px-6 py-12">
+      <section className="section-block bg-light-brown">
+        <div className="container">
         <div className="text-center mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Shop by Category</h2>
-          <p className="text-gray-600">Discover our wide range of products</p>
+          <h2 className="heading2">Shop by Category</h2>
+          <p>Discover our wide range of products</p>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <a href="/shop?category=dhoop" className="group">
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
-              <div className="aspect-square bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center">
-                <img 
-                  src="https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" 
-                  alt="Dhoop Products"
-                  className="w-16 h-16 object-cover rounded-full"
-                />
-              </div>
+          <a href="/shop?category=dhoop" className="category-card">
+      
               <div className="p-4 text-center">
-                <h3 className="font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors">Dhoop</h3>
+                <h3 className="cat-title">Dhoop Sticks</h3>
                 <p className="text-sm text-gray-500 mt-1">Sacred Fragrance</p>
               </div>
-            </div>
+        
           </a>
           
-          <a href="/shop?category=incense" className="group">
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
-              <div className="aspect-square bg-gradient-to-br from-purple-100 to-purple-200 flex items-center justify-center">
-                <img 
-                  src="https://images.unsplash.com/photo-1596462502278-4bfe3525c3e8?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" 
-                  alt="Incense Sticks"
-                  className="w-16 h-16 object-cover rounded-full"
-                />
-              </div>
+          <a href="/shop?category=incense" className="category-card">
+         
               <div className="p-4 text-center">
-                <h3 className="font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors">Incense Sticks</h3>
+                <h3 className="cat-title">Incense Sticks</h3>
                 <p className="text-sm text-gray-500 mt-1">Aromatic Sticks</p>
               </div>
-            </div>
+           
           </a>
           
-          <a href="/shop?category=attar" className="group">
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
-              <div className="aspect-square bg-gradient-to-br from-rose-100 to-rose-200 flex items-center justify-center">
-                <img 
-                  src="https://images.unsplash.com/photo-1559181567-c3190ca9959b?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" 
-                  alt="Attar Perfumes"
-                  className="w-16 h-16 object-cover rounded-full"
-                />
-              </div>
+          <a href="/shop?category=attar" className="category-card">
+         
               <div className="p-4 text-center">
-                <h3 className="font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors">Attar</h3>
+                <h3 className="cat-title">Attar</h3>
                 <p className="text-sm text-gray-500 mt-1">Natural Perfumes</p>
               </div>
-            </div>
+       
           </a>
           
-          <a href="/shop?category=herbal" className="group">
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
-              <div className="aspect-square bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center">
-                <img 
-                  src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" 
-                  alt="Herbal Products"
-                  className="w-16 h-16 object-cover rounded-full"
-                />
-              </div>
+          <a href="/shop?category=others" className="category-card">
+         
               <div className="p-4 text-center">
-                <h3 className="font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors">Herbal</h3>
-                <p className="text-sm text-gray-500 mt-1">Natural Remedies</p>
+                <h3 className="cat-title">Others</h3>
+                <p className="text-sm text-gray-500 mt-1">Essential Products</p>
               </div>
-            </div>
+           
           </a>
         </div>
-      </section>
-
-      {featured.length > 0 && (
-        <section className="max-w-6xl mx-auto px-6 py-12">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold">Featured Products</h2>
-            <a href="/shop" className="text-sm text-indigo-600 hover:text-indigo-700 font-medium hover:underline">
-              View all →
-            </a>
           </div>
-          <ProductCarousel products={featured} />
-        </section>
-      )}
-
-      <section className="max-w-6xl mx-auto px-6 pb-16">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold">Latest Products</h2>
-          <a href="/shop" className="text-sm text-indigo-600 hover:underline">View all</a>
-        </div>
-        <div className="grid gap-5 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {latest.map(p => <ProductCard key={p.id} product={p} />)}
-        </div>
       </section>
+
+      {/* Category Wise Product Sections */}
+      {Object.entries(byCategory).map(([catKey, items]) => (
+        items.length > 0 && (
+          <section key={catKey} className="section-block">
+            <div className="container">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h2 className="heading2">
+                    {catKey === 'dhoop' && 'Dhoop Sticks'}
+                    {catKey === 'incense' && 'Incense Sticks'}
+                    {catKey === 'attar' && 'Attar'}
+                    {catKey === 'others' && 'Other Products'}
+                  </h2>
+                  <p className="text-sm text-gray-600">
+                    {catKey === 'dhoop' && 'Sacred fragrance collection.'}
+                    {catKey === 'incense' && 'Aromatic sticks for ambiance.'}
+                    {catKey === 'attar' && 'Natural perfume oils.'}
+                    {catKey === 'others' && 'Miscellaneous essentials.'}
+                  </p>
+                </div>
+                <a href={`/shop?category=${catKey}`} className="text-sm text-indigo-600 hover:underline">
+                  View all
+                </a>
+              </div>
+
+              {/* Use carousel if many items (desktop >4, mobile >2) */}
+              {items.length > 4 ? (
+                <ProductCarousel
+                  products={items}
+                  limit={12}
+                  className="category-carousel mb-2"
+                />
+              ) : (
+                <div className="grid gap-5 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                  {items.slice(0, 12).map(p => (
+                    <ProductCard key={p.id} product={{ ...p, images: p.images ?? undefined, photo: p.photo ?? undefined }} />
+                  ))}
+                </div>
+              )}
+            </div>
+          </section>
+        )
+      ))}
+
+   
 
       <JsonLd data={{
         "@context": "https://schema.org",

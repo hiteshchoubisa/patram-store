@@ -1,12 +1,12 @@
 export const siteConfig = {
-  name: "Patram Store",
+  name: "Buy Online Handmade Aushadhi Incense Sticks: Customize Incense Store",
   baseUrl: "http://localhost:4000",
-  description: "SEO friendly ecommerce store.",
+  description: "Patram is your place to buy online handmade Aushadhi Incense Sticks. They specialise to customize incense you need to make your house smell amazing",
   ogImage: "/og-default.jpg",
   twitterHandle: "@yourbrand",
   company: {
-    name: "Patram",
-    phone: "+91-0000000000",
-    address: "City, Country"
+    name: "Patram Works",
+    phone: "+91-8107514654",
+    address: "Udaipur, Rajasthan, India",
   }
 };

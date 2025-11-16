@@ -21,7 +21,6 @@ export default function CheckoutPage() {
   const { customer, isAuthenticated } = useCustomerAuth();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [cartLoading, setCartLoading] = useState(true);
   const [formErrors, setFormErrors] = useState<string[]>([]);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [isSearchingClient, setIsSearchingClient] = useState(false);
@@ -39,6 +38,12 @@ export default function CheckoutPage() {
     paymentMethod: "cod"
   });
 
+  const handleClearCart = () => {
+    if (!lines.length) return;
+    if (confirm("Clear all items from cart?")) {
+      clear();
+    }
+  };
 
   // Pre-fill form with customer data if logged in
   useEffect(() => {
@@ -52,27 +57,12 @@ export default function CheckoutPage() {
     }
   }, [isAuthenticated, customer]);
 
-  // Check cart state and redirect if empty
+  // Redirect if cart is empty
   useEffect(() => {
-    // Give cart time to load from localStorage
-    const timer = setTimeout(() => {
-      setCartLoading(false);
-      // Only redirect if cart is truly empty after loading and not processing an order
-      if (lines.length === 0 && !orderProcessing) {
-        console.log("Cart is empty, redirecting to shop");
-        router.push("/shop");
-      }
-    }, 200); // Increased timeout to ensure cart loads
-
-    return () => clearTimeout(timer);
-  }, [lines.length, router, orderProcessing]);
-
-  // Additional check to prevent flash
-  useEffect(() => {
-    if (!cartLoading && lines.length > 0) {
-      console.log("Cart loaded with items:", lines.length);
+    if (lines.length === 0 && !orderProcessing) {
+      router.replace("/shop");
     }
-  }, [cartLoading, lines.length]);
+  }, [lines.length, orderProcessing, router]);
 
   const validateForm = () => {
     const errors: string[] = [];
@@ -358,30 +348,6 @@ export default function CheckoutPage() {
     setForm(prev => ({ ...prev, paymentMethod: 'cod' }));
   }, []);
 
-  // Show loading while cart is being checked
-  if (cartLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading your cart...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // Show redirect message if cart is empty
-  if (lines.length === 0) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Redirecting to shop...</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -389,77 +355,74 @@ export default function CheckoutPage() {
           <h1 className="checkout-title">Checkout</h1>
           <p className="checkout-subtitle">Complete your order</p>
         </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Checkout Form */}
-          <div className="checkout-form-container">
-            
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Required Fields Note */}
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <div className="flex items-start">
-                  <svg className="w-5 h-5 text-blue-400 mt-0.5 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  <div>
-                    <h3 className="text-sm font-medium text-blue-800">All fields marked with <span className="text-red-500">*</span> are required</h3>
-                    <p className="mt-1 text-sm text-blue-700">Please fill in all the required information to complete your order.</p>
+        {/* Render nothing if cart empty (redirect happens silently) */}
+        {lines.length > 0 && (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Checkout Form */}
+            <div className="checkout-form-container">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Required Fields Note */}
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <div className="flex items-start">
+                    <svg className="w-5 h-5 text-blue-400 mt-0.5 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <div>
+                      <h3 className="text-sm font-medium text-blue-800">All fields marked with <span className="text-red-500">*</span> are required</h3>
+                      <p className="mt-1 text-sm text-blue-700">Please fill in all the required information to complete your order.</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-              
-              {/* Personal Information */}
-              <div className="checkout-section">
-                <h2 className="checkout-section-title">Already a Member? <br/><small>We’ll auto-fill your details using your phone number.</small></h2>
                 
-                <div className="grid   gap-4">
-                <div>
-                    <label className="checkout-label">
-                      Phone Number <span className="text-red-500">*</span>
-                    </label>
-                    <div className="relative">
-                      <input
-                        type="tel"
-                        required
-                        value={form.phone}
-                        onChange={(e) => handleInputChange("phone", e.target.value)}
-                        className={`checkout-input pr-10 ${fieldErrors.phone ? 'border-red-500 focus:border-red-500' : isFieldEmpty('phone') ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-indigo-500'}`}
-                        placeholder="Enter your phone number"
-                      />
-                      {isSearchingClient && (
-                        <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-indigo-600"></div>
-                        </div>
+                {/* Personal Information */}
+                <div className="checkout-section">
+                  <h2 className="checkout-section-title">Already a Member? <br/><small>We’ll auto-fill your details using your phone number.</small></h2>
+                  <div className="grid gap-4">
+                    <div>
+                      <label className="checkout-label">
+                        Phone Number <span className="text-red-500">*</span>
+                      </label>
+                      <div className="relative">
+                        <input
+                          type="tel"
+                          required
+                          value={form.phone}
+                          onChange={(e) => handleInputChange("phone", e.target.value)}
+                          className={`checkout-input pr-10 ${fieldErrors.phone ? 'border-red-500 focus:border-red-500' : isFieldEmpty('phone') ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-indigo-500'}`}
+                          placeholder="Enter your phone number"
+                        />
+                        {isSearchingClient && (
+                          <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-indigo-600"></div>
+                          </div>
+                        )}
+                        {clientFound && !isSearchingClient && (
+                          <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                            <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                          </div>
+                        )}
+                      </div>
+                      {fieldErrors.phone && (
+                        <p className="mt-1 text-sm text-red-600">{fieldErrors.phone}</p>
                       )}
                       {clientFound && !isSearchingClient && (
-                        <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                          <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <p className="mt-1 text-sm text-green-600 flex items-center">
+                          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                           </svg>
-                        </div>
+                          Client found! Form auto-filled with existing details.
+                        </p>
                       )}
                     </div>
-                    {fieldErrors.phone && (
-                      <p className="mt-1 text-sm text-red-600">{fieldErrors.phone}</p>
-                    )}
-                    {clientFound && !isSearchingClient && (
-                      <p className="mt-1 text-sm text-green-600 flex items-center">
-                        <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                        Client found! Form auto-filled with existing details.
-                      </p>
-                    )}
                   </div>
-                 
-                  
                 </div>
-              </div>
 
-              {/* Shipping Address */}
-              <div className="checkout-section">
-                <h2 className="checkout-section-title">Personal Details</h2>
-                <div>
+                {/* Shipping Address */}
+                <div className="checkout-section">
+                  <h2 className="checkout-section-title">Personal Details</h2>
+                  <div>
                     <label className="checkout-label">
                       Full Name <span className="text-red-500">*</span>
                     </label>
@@ -491,215 +454,206 @@ export default function CheckoutPage() {
                       <p className="mt-1 text-sm text-red-600">{fieldErrors.email}</p>
                     )}
                   </div>
-                <div className="space-y-4">
-                  <div>
-                    <label className="checkout-label">
-                      Address <span className="text-red-500">*</span>
-                    </label>
-                    <textarea
-                      required
-                      value={form.address}
-                      onChange={(e) => handleInputChange("address", e.target.value)}
-                      className={`checkout-textarea ${fieldErrors.address ? 'border-red-500 focus:border-red-500' : isFieldEmpty('address') ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-indigo-500'}`}
-                      placeholder="Enter your complete address"
-                      rows={3}
-                    />
-                    {fieldErrors.address && (
-                      <p className="mt-1 text-sm text-red-600">{fieldErrors.address}</p>
-                    )}
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-4">
                     <div>
                       <label className="checkout-label">
-                        City <span className="text-red-500">*</span>
+                        Address <span className="text-red-500">*</span>
                       </label>
-                      <input
-                        type="text"
+                      <textarea
                         required
-                        value={form.city}
-                        onChange={(e) => handleInputChange("city", e.target.value)}
-                        className={`checkout-input ${fieldErrors.city ? 'border-red-500 focus:border-red-500' : isFieldEmpty('city') ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-indigo-500'}`}
-                        placeholder="City"
+                        value={form.address}
+                        onChange={(e) => handleInputChange("address", e.target.value)}
+                        className={`checkout-textarea ${fieldErrors.address ? 'border-red-500 focus:border-red-500' : isFieldEmpty('address') ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-indigo-500'}`}
+                        placeholder="Enter your complete address"
+                        rows={3}
                       />
-                      {fieldErrors.city && (
-                        <p className="mt-1 text-sm text-red-600">{fieldErrors.city}</p>
+                      {fieldErrors.address && (
+                        <p className="mt-1 text-sm text-red-600">{fieldErrors.address}</p>
                       )}
                     </div>
-                    <div>
-                      <label className="checkout-label">
-                        Pincode <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        value={form.pincode}
-                        onChange={(e) => handleInputChange("pincode", e.target.value)}
-                        className={`checkout-input ${fieldErrors.pincode ? 'border-red-500 focus:border-red-500' : isFieldEmpty('pincode') ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-indigo-500'}`}
-                        placeholder="Pincode"
-                      />
-                      {fieldErrors.pincode && (
-                        <p className="mt-1 text-sm text-red-600">{fieldErrors.pincode}</p>
-                      )}
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="checkout-label">
-                        State <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        value={form.state}
-                        onChange={(e) => handleInputChange("state", e.target.value)}
-                        className={`checkout-input ${fieldErrors.state ? 'border-red-500 focus:border-red-500' : isFieldEmpty('state') ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-indigo-500'}`}
-                        placeholder="State"
-                      />
-                      {fieldErrors.state && (
-                        <p className="mt-1 text-sm text-red-600">{fieldErrors.state}</p>
-                      )}
-                    </div>
-                    <div>
-                      <label className="checkout-label">
-                        Country <span className="text-red-500">*</span>
-                      </label>
-                      <select
-                        required
-                        value={form.country}
-                        onChange={(e) => handleInputChange("country", e.target.value)}
-                        className={`checkout-input ${fieldErrors.country ? 'border-red-500 focus:border-red-500' : isFieldEmpty('country') ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-indigo-500'}`}
-                      >
-                        <option value="India">India</option>
-                        <option value="United States">United States</option>
-                        <option value="United Kingdom">United Kingdom</option>
-                        <option value="Canada">Canada</option>
-                        <option value="Australia">Australia</option>
-                        <option value="Germany">Germany</option>
-                        <option value="France">France</option>
-                        <option value="Japan">Japan</option>
-                        <option value="Other">Other</option>
-                      </select>
-                      {fieldErrors.country && (
-                        <p className="mt-1 text-sm text-red-600">{fieldErrors.country}</p>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </form>
-          </div>
-
-          <div>
-{/* Order Summary */}
-<div className="checkout-summary">
-            <h2 className="checkout-summary-title">Order Summary</h2>
-            <div className="checkout-items">
-              {lines.map((item) => (
-                <div key={item.id} className="checkout-item">
-                  <div className="checkout-item-image">
-                    {item.photo ? (
-                      <img src={item.photo} alt={item.name} />
-                    ) : (
-                      <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                        <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="checkout-label">
+                          City <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={form.city}
+                          onChange={(e) => handleInputChange("city", e.target.value)}
+                          className={`checkout-input ${fieldErrors.city ? 'border-red-500 focus:border-red-500' : isFieldEmpty('city') ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-indigo-500'}`}
+                          placeholder="City"
+                        />
+                        {fieldErrors.city && (
+                          <p className="mt-1 text-sm text-red-600">{fieldErrors.city}</p>
+                        )}
                       </div>
-                    )}
-                  </div>
-                  <div className="checkout-item-details">
-                    <div className="checkout-item-name">{item.name}</div>
-                    <div className="checkout-item-qty">Qty: {item.qty}</div>
-                  </div>
-                  <div className="checkout-item-price">₹{(item.price * item.qty).toLocaleString("en-IN")}</div>
-                </div>
-              ))}
-            </div>
-            
-            <div className="checkout-total">
-              <div className="checkout-total-row">
-                <span>Subtotal</span>
-                <span>₹{total.toLocaleString("en-IN")}</span>
-              </div>
-              <div className="checkout-total-row">
-                <span>Shipping</span>
-                <span className="text-green-600">Free</span>
-              </div>
-              <div className="checkout-total-final">
-                <span>Total</span>
-                <span>₹{total.toLocaleString("en-IN")}</span>
-              </div>
-            </div>
-
-            
-          </div>
- {/* Payment Method & Place Order */}
- <div className="checkout-summary">
-            <h2 className="checkout-summary-title">Payment Method</h2>
-            
-            {/* Location-based payment info */}
-            {/* {!isUdaipurAddress() && (form.city || form.state) && (
-              <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-                <div className="flex items-start">
-                  <svg className="w-5 h-5 text-yellow-600 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                  </svg>
-                  <div className="text-sm text-yellow-800">
-                    <p className="font-medium">Cash on Delivery not available</p>
-                    <p>COD is only available for Udaipur, Rajasthan addresses. Please use online payment for other locations.</p>
-                  </div>
-                </div>
-              </div>
-            )} */}
-
-            <div className="space-y-4">
-              {getAvailablePaymentMethods().map((method) => (
-                <div key={method.id} className="payment-option mb-4">
-                  <input
-                    type="radio"
-                    id={method.id}
-                    name="paymentMethod"
-                    value={method.value}
-                    checked={form.paymentMethod === method.value}
-                    onChange={(e) => handleInputChange("paymentMethod", e.target.value)}
-                    className="payment-radio"
-                  />
-                  <label htmlFor={method.id} className="payment-label">
-                    <div className="payment-icon">
-                      {method.icon}
+                      <div>
+                        <label className="checkout-label">
+                          Pincode <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={form.pincode}
+                          onChange={(e) => handleInputChange("pincode", e.target.value)}
+                          className={`checkout-input ${fieldErrors.pincode ? 'border-red-500 focus:border-red-500' : isFieldEmpty('pincode') ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-indigo-500'}`}
+                          placeholder="Pincode"
+                        />
+                        {fieldErrors.pincode && (
+                          <p className="mt-1 text-sm text-red-600">{fieldErrors.pincode}</p>
+                        )}
+                      </div>
                     </div>
-                    <div>
-                      <div className="payment-title">{method.title}</div>
-                      <div className="payment-description">{method.description}</div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="checkout-label">
+                          State <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={form.state}
+                          onChange={(e) => handleInputChange("state", e.target.value)}
+                          className={`checkout-input ${fieldErrors.state ? 'border-red-500 focus:border-red-500' : isFieldEmpty('state') ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-indigo-500'}`}
+                          placeholder="State"
+                        />
+                        {fieldErrors.state && (
+                          <p className="mt-1 text-sm text-red-600">{fieldErrors.state}</p>
+                        )}
+                      </div>
+                      <div>
+                        <label className="checkout-label">
+                          Country <span className="text-red-500">*</span>
+                        </label>
+                        <select
+                          required
+                          value={form.country}
+                          onChange={(e) => handleInputChange("country", e.target.value)}
+                          className={`checkout-input ${fieldErrors.country ? 'border-red-500 focus:border-red-500' : isFieldEmpty('country') ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-indigo-500'}`}
+                        >
+                          <option value="India">India</option>
+                          <option value="United States">United States</option>
+                          <option value="United Kingdom">United Kingdom</option>
+                          <option value="Canada">Canada</option>
+                          <option value="Australia">Australia</option>
+                          <option value="Germany">Germany</option>
+                          <option value="France">France</option>
+                          <option value="Japan">Japan</option>
+                          <option value="Other">Other</option>
+                        </select>
+                        {fieldErrors.country && (
+                          <p className="mt-1 text-sm text-red-600">{fieldErrors.country}</p>
+                        )}
+                      </div>
                     </div>
-                  </label>
+                  </div>
                 </div>
-              ))}
+              </form>
             </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="checkout-submit-btn"
-              onClick={(e) => {
-                e.preventDefault();
-                handleSubmit(e);
-              }}
-            >
-              {loading ? (
-                <div className="flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                  Processing...
+            {/* Order Summary */}
+            <div>
+              <div className="checkout-summary">
+                <h2 className="checkout-summary-title">Order Summary</h2>
+                <div className="checkout-items">
+                  {lines.map((item) => (
+                    <div key={item.id} className="checkout-item">
+                      <div className="checkout-item-image">
+                        {item.photo ? (
+                          <img src={item.photo} alt={item.name} />
+                        ) : (
+                          <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                            <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                          </div>
+                        )}
+                      </div>
+                      <div className="checkout-item-details">
+                        <div className="checkout-item-name">{item.name}</div>
+                        <div className="checkout-item-qty">Qty: {item.qty}</div>
+                      </div>
+                      <div className="checkout-item-price">₹{(item.price * item.qty).toLocaleString("en-IN")}</div>
+                    </div>
+                  ))}
                 </div>
-              ) : (
-                `Place Order - ₹${total.toLocaleString("en-IN")}`
-              )}
-            </button>
+                
+                <div className="checkout-total">
+                  <div className="checkout-total-row">
+                    <span>Subtotal</span>
+                    <span>₹{total.toLocaleString("en-IN")}</span>
+                  </div>
+                  <div className="checkout-total-row">
+                    <span>Shipping</span>
+                    <span className="text-green-600">Free</span>
+                  </div>
+                  <div className="checkout-total-final">
+                    <span>Total</span>
+                    <span>₹{total.toLocaleString("en-IN")}</span>
+                  </div>
+                  {/* Clear Cart Button */}
+                  <button
+                    type="button"
+                    onClick={handleClearCart}
+                    disabled={!lines.length}
+                    className="mt-4 w-full rounded-md border border-red-500 text-red-600 text-sm py-2 font-medium hover:bg-red-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
+                  >
+                    Clear Cart
+                  </button>
+                </div>
+              </div>
+
+              {/* Payment Method & Place Order */}
+              <div className="checkout-summary">
+                <h2 className="checkout-summary-title">Payment Method</h2>
+                <div className="space-y-4">
+                  {getAvailablePaymentMethods().map((method) => (
+                    <div key={method.id} className="payment-option mb-4">
+                      <input
+                        type="radio"
+                        id={method.id}
+                        name="paymentMethod"
+                        value={method.value}
+                        checked={form.paymentMethod === method.value}
+                        onChange={(e) => handleInputChange("paymentMethod", e.target.value)}
+                        className="payment-radio"
+                      />
+                      <label htmlFor={method.id} className="payment-label">
+                        <div className="payment-icon">
+                          {method.icon}
+                        </div>
+                        <div>
+                          <div className="payment-title">{method.title}</div>
+                          <div className="payment-description">{method.description}</div>
+                        </div>
+                      </label>
+                    </div>
+                  ))}
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="checkout-submit-btn"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleSubmit(e);
+                  }}
+                >
+                  {loading ? (
+                    <div className="flex items-center justify-center">
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                      Processing...
+                    </div>
+                  ) : (
+                    `Place Order - ₹${total.toLocaleString("en-IN")}`
+                  )}
+                </button>
+              </div>
+            </div>
           </div>
-          </div>
-         
-        </div>
+        )}
       </div>
     </div>
   );

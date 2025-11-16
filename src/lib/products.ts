@@ -15,12 +15,14 @@ function photoUrl(key?: string | null) {
   return data.publicUrl;
 }
 
-export type StoreProduct = {
+export interface StoreProduct {
   id: string;
   name: string;
   price: number;
+  image?: string;
+  category?: string;      // added
+  categorySlug?: string;  // optional
   mrp?: number | null;
-  category?: string | null;
   description?: string | null;
   photo: string | null;
   images?: string[] | null;

@@ -12,6 +12,9 @@ export default function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [showHeader, setShowHeader] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
   const userDropdownRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const { count } = useCart();
@@ -34,8 +37,29 @@ export default function Header() {
     };
   }, [isUserDropdownOpen]);
 
+  useEffect(() => {
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 10);
+
+      if (y <= 10) {
+        setShowHeader(true);
+      } else if (y > lastScrollY) {
+        // scrolling down
+        setShowHeader(false);
+      } else {
+        // scrolling up
+        setShowHeader(true);
+      }
+      setLastScrollY(y);
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [lastScrollY]);
+
   return (
-    <header className="border-b bg-white/90 backdrop-blur sticky top-0 z-40">
+    <header className={`header-bl ${scrolled ? "scrolled" : ""} ${showHeader ? "" : "hide"}`}>
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between gap-6">
         {/* Logo */}
         <a href="/" className="flex items-center" aria-label="Patram Home">
@@ -45,7 +69,7 @@ export default function Header() {
             width={120}
             height={32}
             priority
-            className="h-9 w-auto"
+            className="h-13 w-auto"
           />
         </a>
         
@@ -57,10 +81,10 @@ export default function Header() {
           {/* Search Icon */}
           <button
             onClick={() => setIsSearchOpen(true)}
-            className="p-2 text-gray-600 hover:text-gray-900 transition-colors"
+            className="icon-link p-2"
             aria-label="Search"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </button>
@@ -70,10 +94,10 @@ export default function Header() {
             <div className="relative" ref={userDropdownRef}>
               <button 
                 onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
-                className="p-2 text-gray-600 hover:text-gray-900 transition-colors" 
+                className="icon-link p-2" 
                 aria-label="User Account"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
               </button>
@@ -109,10 +133,10 @@ export default function Header() {
           ) : (
             <a
               href="/customer-login"
-              className="p-2 text-gray-600 hover:text-gray-900 transition-colors"
+              className="icon-link p-2"
               aria-label="User Account"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
             </a>
@@ -131,7 +155,7 @@ export default function Header() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2 text-gray-600 hover:text-gray-900 transition-colors"
+            className="md:hidden icon-link p-2"
             aria-label="Toggle mobile menu"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -157,7 +181,7 @@ export default function Header() {
                 className="p-2 text-gray-600 hover:text-gray-900 transition-colors"
                 aria-label="Close mobile menu"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>

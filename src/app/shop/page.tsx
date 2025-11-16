@@ -64,6 +64,14 @@ export default async function ShopPage(props: { searchParams: Promise<SearchPara
           >
             Attar
           </a>
+          <a 
+            href="/shop?category=others" 
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+              category === 'attar' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            }`}
+          >
+            Others
+          </a>
         </div>
       </div>
 
@@ -84,7 +92,7 @@ export default async function ShopPage(props: { searchParams: Promise<SearchPara
 
       {!empty && (
         <div className="grid gap-5 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {filtered.map(p => <ProductCard key={p.id} product={p} />)}
+          {filtered.map(p => <ProductCard key={p.id} product={{ ...p, images: p.images || undefined, photo: p.photo || undefined }} />)}
         </div>
       )}
     </div>
