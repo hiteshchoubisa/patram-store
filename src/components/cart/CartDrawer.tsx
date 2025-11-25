@@ -66,7 +66,7 @@ export default function CartDrawer() {
               </button>
             </div>
             
-            <div className="flex-1 flex flex-col bg-white">
+            <div className="flex-1 flex flex-col bg-white card-drawer-content">
               {lines.length === 0 ? (
                 <div className="flex-1 flex flex-col items-center justify-center text-center p-8">
                   <svg className="w-16 h-16 text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -79,7 +79,7 @@ export default function CartDrawer() {
                 <>
                
                   {/* Cart Items */}
-                  <div className={`flex-1 overflow-y-auto cart-scrollable relative ${lines.length > 3 ? 'max-h-96' : ''}`}>
+                  <div className={`flex-1 overflow-y-auto cart-scrollable relative ${lines.length > 6 ? ' ' : ''}`}>
                     {lines.length > 3 && (
                       <>
                         <div className="text-center py-2 text-xs text-gray-500 bg-gray-50 border-b border-gray-100">

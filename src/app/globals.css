@@ -179,6 +179,10 @@ p {
   }
 }
 
+.card-drawer-content{
+  max-height: calc(100vh - 200px);
+}
+
 /* product card styles */
 .product-dt{
   @apply py-3 flex;
