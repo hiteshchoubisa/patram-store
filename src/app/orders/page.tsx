@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useCustomerAuth } from '@/contexts/CustomerAuthContext';
 import { supabase } from '@/lib/supabaseClient';
 import { getOrderDisplayNumber } from '@/lib/orderNumber';
+import InnerBanner from '@/components/layout/InnerBanner';
 
 // Component to handle product name display with fallback
 const ProductName = ({ item }: { item: OrderItem }) => {
@@ -337,8 +338,12 @@ export default function OrdersPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 pb-12">
+      <InnerBanner
+        title="My Orders"
+        subtitle="Track your purchases and review their latest status."
+      />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
         <div className="mb-8 flex justify-between items-center">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">My Orders</h1>

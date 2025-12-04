@@ -1,17 +1,12 @@
+import InnerBanner from "@/components/layout/InnerBanner";
+
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-indigo-600 to-fuchsia-600 text-white py-20">
-        <div className="max-w-6xl mx-auto px-6">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">About Patram</h1>
-          <p className="text-xl opacity-90 max-w-3xl">
-            Your trusted partner for authentic ayurvedic and herbal products, 
-            bringing you the finest traditional remedies and natural fragrances.
-          </p>
-        </div>
-      </section>
-
+      <InnerBanner
+        title="About Patram"
+        subtitle="Your trusted partner for authentic ayurvedic and herbal products."
+      />
       {/* Main Content */}
       <div className="max-w-6xl mx-auto px-6 py-16">
         <div className="grid md:grid-cols-2 gap-12 items-center mb-16">

@@ -38,6 +38,27 @@ export default async function HomePage() {
   const excluded = ["bheem seni", "patram silver 200gm"];
   const filteredFeatured = featured.filter(p => !excluded.includes(p.name.toLowerCase()));
 
+  const customizationHighlights = [
+    { label: "Blend styles", value: "30+" },
+    { label: "Lead time", value: "10 days" },
+    { label: "MOQ", value: "50 boxes" }
+  ];
+
+  const customizationSteps = [
+    {
+      title: "Share the vibe",
+      description: "Tell us the mood, ritual or purpose your incense should support."
+    },
+    {
+      title: "Co-create the blend",
+      description: "Pick base ingredients, oil strength and stick format with our perfumers."
+    },
+    {
+      title: "Finalize packaging",
+      description: "Choose eco sleeves, gifting tins or private-label boxes to match your brand."
+    }
+  ];
+
   return (
     <>
       <section className="bg-banner">
@@ -60,6 +81,8 @@ export default async function HomePage() {
                   />
         </div>
       </section>
+
+     
 
       {/* Categories Section */}
       <section className="section-block bg-light-brown">
@@ -152,7 +175,62 @@ export default async function HomePage() {
         )
       ))}
 
-   
+    {/* Customize Incense Section */}
+    <section className="section-block bg-[#fff8ef]">
+        <div className="container">
+          <div className="grid gap-10 lg:grid-cols-2 items-center">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-wide text-[#f45a29] mb-3">
+                Customize Incense
+              </p>
+              <h2 className="heading2 text-3xl lg:text-4xl">
+                Co-create incense blends that match your ritual, event or brand.
+              </h2>
+              <p className="mt-4 text-base text-gray-700">
+                From herbal dhoop to luxury attar-infused sticks, Patram's lab can tailor aroma, burn time and packaging so you launch something truly personal.
+              </p>
+              <div className="mt-8 grid grid-cols-3 gap-4 max-w-md">
+                {customizationHighlights.map(item => (
+                  <div key={item.label} className="bg-white rounded-xl px-4 py-3 shadow-sm border border-orange-50 text-center">
+                    <p className="text-2xl font-bold text-gray-900">{item.value}</p>
+                    <p className="text-xs uppercase tracking-wide text-gray-500">{item.label}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-8 flex flex-wrap gap-4">
+                
+                <a
+                  href="https://wa.me/918107514654?text=Hi%20Patram%2C%20I%20want%20to%20customize%20incense"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn bg-gray-900 text-white"
+                >
+                 Talk to our lab
+                </a>
+              </div>
+            </div>
+            <div className="bg-white rounded-2xl p-6 shadow-lg border border-orange-50">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">How customization works</h3>
+              <div className="space-y-5">
+                {customizationSteps.map((step, idx) => (
+                  <div key={step.title} className="flex gap-4">
+                    <div className="h-10 w-10 rounded-full bg-[#f45a29]/10 text-[#f45a29] flex items-center justify-center font-semibold">
+                      {idx + 1}
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-900">{step.title}</p>
+                      <p className="text-sm text-gray-600">{step.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-6 rounded-xl border border-dashed border-gray-200 bg-gray-50 p-4 text-sm text-gray-600">
+                Need something rush? Share your target fragrance notes and delivery date—our team replies within 24 hours.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <JsonLd data={{
         "@context": "https://schema.org",

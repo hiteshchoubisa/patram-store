@@ -1,17 +1,12 @@
+import InnerBanner from "@/components/layout/InnerBanner";
+
 export default function ContactPage() {
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-indigo-600 to-fuchsia-600 text-white py-20">
-        <div className="max-w-6xl mx-auto px-6">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Contact Us</h1>
-          <p className="text-xl opacity-90 max-w-3xl">
-            Get in touch with us for any questions, support, or feedback. 
-            We're here to help you with all your ayurvedic and herbal product needs.
-          </p>
-        </div>
-      </section>
-
+      <InnerBanner
+        title="Contact Us"
+        subtitle="Get in touch for questions, support, or product guidance—we’re here to help."
+      />
       {/* Main Content */}
       <div className="max-w-6xl mx-auto px-6 py-16">
         <div className="grid lg:grid-cols-2 gap-12">

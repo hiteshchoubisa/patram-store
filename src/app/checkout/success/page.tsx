@@ -1,13 +1,19 @@
 "use client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import InnerBanner from "@/components/layout/InnerBanner";
 
 export default function CheckoutSuccessPage() {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12">
-      <div className="max-w-md w-full mx-auto">
+    <div className="min-h-screen bg-gray-50 pb-12">
+      <InnerBanner
+        title="Order Successful"
+        subtitle="Thank you for shopping with Patram."
+        align="center"
+      />
+      <div className="max-w-md w-full mx-auto mt-8 flex items-center justify-center px-4">
         <div className="bg-white rounded-lg shadow-lg p-8 text-center">
           {/* Success Icon */}
           <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-6">

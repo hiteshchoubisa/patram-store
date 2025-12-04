@@ -1,15 +1,17 @@
-"use client";
+ "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { StoreProduct } from "../../lib/products";
 import { useCart } from "../cart/CartProvider";
 import ImageSlider from "./ImageSlider";
+import ProductCard from "./ProductCard";
 
 interface ProductDetailProps {
   product: StoreProduct;
+  relatedProducts?: StoreProduct[];
 }
 
-export default function ProductDetail({ product }: ProductDetailProps) {
+export default function ProductDetail({ product, relatedProducts = [] }: ProductDetailProps) {
   const { add } = useCart();
   const router = useRouter();
   const [quantity, setQuantity] = useState(1);
@@ -199,6 +201,42 @@ export default function ProductDetail({ product }: ProductDetailProps) {
             </div>
           </div>
         </div>
+
+        {relatedProducts.length > 0 && (
+          <section className="mt-12 border-t border-gray-200 pt-10">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h2 className="text-xl font-semibold text-gray-900">You may also like</h2>
+                <p className="text-sm text-gray-500">
+                  Other {product.category || "Patram"} products customers often explore.
+                </p>
+              </div>
+              <a
+                href={`/shop?category=${encodeURIComponent(product.category || "")}`}
+                className="text-sm text-indigo-600 hover:text-indigo-800 font-medium"
+              >
+                View all
+              </a>
+            </div>
+            <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+              {relatedProducts.map((p) => (
+                <ProductCard
+                  key={p.id}
+                  product={{
+                    id: p.id,
+                    name: p.name,
+                    price: p.price,
+                    images: p.images || undefined,
+                    photo: p.photo || undefined,
+                    category: p.category || undefined,
+                    // @ts-expect-error: ProductCard accepts slug via casting
+                    slug: p.slug || undefined,
+                  } as any}
+                />
+              ))}
+            </div>
+          </section>
+        )}
       </div>
     </div>
   );

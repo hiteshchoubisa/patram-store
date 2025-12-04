@@ -79,7 +79,9 @@ body {
 .icon-link{
   @apply text-gray-800 hover:text-gray-900 transition-colors duration-200;
 }
-
+.inner-banner-section{
+  padding:4rem 0 2.5rem;
+}
 .bg-banner {
   @apply bg-cover  ;
   background-image: url('/bg-banner-vector.svg');

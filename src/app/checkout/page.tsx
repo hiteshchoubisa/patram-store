@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useCart } from "../../components/cart/CartProvider";
 import { useCustomerAuth } from "../../contexts/CustomerAuthContext";
 import { useRouter } from "next/navigation";
+import InnerBanner from "@/components/layout/InnerBanner";
 
 interface CheckoutForm {
   name: string;
@@ -349,8 +350,13 @@ export default function CheckoutPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 pb-12">
+      <InnerBanner
+        title="Checkout"
+        subtitle="Complete your order securely in just a few steps."
+      />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
         <div className="mb-8">
           <h1 className="checkout-title">Checkout</h1>
           <p className="checkout-subtitle">Complete your order</p>

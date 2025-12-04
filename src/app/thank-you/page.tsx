@@ -5,6 +5,7 @@ import Link from "next/link";
 import ContactInfo from '@/components/order/ContactInfo';
 import CustomerInfo from '@/components/order/CustomerInfo';
 import OrderSummary from '@/components/order/OrderSummary';
+import InnerBanner from '@/components/layout/InnerBanner';
 
 interface OrderDetails {
   id: string;
@@ -151,8 +152,13 @@ function ThankYouContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 pb-12">
+      <InnerBanner
+        title="Thank You"
+        subtitle="We’ve received your order and will share updates shortly."
+        align="center"
+      />
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
         {/* Success Header */}
         <div className="text-center mb-8">
           <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">

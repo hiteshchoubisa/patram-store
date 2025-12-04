@@ -1,5 +1,6 @@
 import { getLatestProducts } from "../../lib/products";
 import ProductCard from "../../components/product/ProductCard";
+import InnerBanner from "@/components/layout/InnerBanner";
 
 export const revalidate = 300;
 
@@ -25,8 +26,14 @@ export default async function ShopPage(props: { searchParams: Promise<SearchPara
   const empty = filtered.length === 0;
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-10">
-      <h1 className="text-2xl font-semibold mb-6">Shop</h1>
+    <div className="min-h-screen bg-white">
+      <InnerBanner
+        title="Shop Patram"
+        subtitle="Browse our full range of ayurvedic and aromatic essentials."
+      />
+
+      <div className="max-w-7xl mx-auto px-6 py-10">
+        <h1 className="text-2xl font-semibold mb-6">Shop</h1>
 
       {/* Category Filter */}
       <div className="mb-6">
@@ -90,11 +97,17 @@ export default async function ShopPage(props: { searchParams: Promise<SearchPara
         </div>
       )}
 
-      {!empty && (
-        <div className="grid gap-5 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {filtered.map(p => <ProductCard key={p.id} product={{ ...p, images: p.images || undefined, photo: p.photo || undefined }} />)}
-        </div>
-      )}
+        {!empty && (
+          <div className="grid gap-5 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            {filtered.map(p => (
+              <ProductCard
+                key={p.id}
+                product={{ ...p, images: p.images || undefined, photo: p.photo || undefined }}
+              />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

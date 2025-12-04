@@ -1,5 +1,6 @@
 import { supabase } from "../../../lib/supabaseClient";
 import ProductDetail from "../../../components/product/ProductDetail";
+import InnerBanner from "@/components/layout/InnerBanner";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
@@ -250,7 +251,45 @@ export default async function ProductPage({ params }: ProductPageProps) {
       images: productData.images
     });
 
-    return <ProductDetail product={productData} />;
+    // Fetch related products in same category (excluding current), then shuffle
+    let relatedProducts: any[] = [];
+    if (product.category) {
+      const { data: related, error: relatedError } = await supabase
+        .from("products")
+        .select("id, name, price, mrp, category, description, photo_url, images")
+        .eq("category", product.category)
+        .neq("id", product.id)
+        .limit(20);
+
+      if (!relatedError && related && related.length > 0) {
+        const mapped = related.map((p: any) => ({
+          id: p.id,
+          name: p.name,
+          description: p.description || "",
+          photo: getPhotoUrl(p.photo_url),
+          price: p.price || 0,
+          mrp: p.mrp || null,
+          category: p.category || null,
+          images: getImageUrls(p.images),
+          slug: p.id,
+        }));
+
+        // Simple shuffle for random order
+        relatedProducts = mapped
+          .sort(() => Math.random() - 0.5)
+          .slice(0, 4);
+      }
+    }
+
+    return (
+      <div className="min-h-screen bg-white">
+        <InnerBanner
+          title="Shop Patram"
+          subtitle="Browse our full range of ayurvedic and aromatic essentials."
+        />
+        <ProductDetail product={productData} relatedProducts={relatedProducts} />
+      </div>
+    );
   } catch (error) {
     console.error("❌ Product page error:", error);
     notFound();
