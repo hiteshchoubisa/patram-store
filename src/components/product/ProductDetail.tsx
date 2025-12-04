@@ -229,7 +229,6 @@ export default function ProductDetail({ product, relatedProducts = [] }: Product
                     images: p.images || undefined,
                     photo: p.photo || undefined,
                     category: p.category || undefined,
-                    // @ts-expect-error: ProductCard accepts slug via casting
                     slug: p.slug || undefined,
                   } as any}
                 />
