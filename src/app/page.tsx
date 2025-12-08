@@ -3,9 +3,36 @@ import ProductCarousel from "../components/product/ProductCarousel";
 import ProductCard from "../components/product/ProductCard";
 import JsonLd from "../components/seo/JsonLd";
 import Image from "next/image";
- 
+import type { Metadata } from "next";
+import { siteConfig } from "../config/site";
 
 export const revalidate = 300;
+
+export const metadata: Metadata = {
+  title: "Buy Ayurvedic Dhoop, Incense & Attar Online | Patram Store",
+  description:
+    "Shop handcrafted Ayurvedic dhoop sticks, incense (agarbatti), attar oils and pooja essentials. Natural ingredients, safe smoke, fast delivery and custom aroma development.",
+  keywords: [
+    "buy dhoop online",
+    "ayurvedic dhoop sticks",
+    "natural incense sticks",
+    "agarbatti online",
+    "herbal incense",
+    "attar oil",
+    "pooja essentials",
+    "handmade incense India",
+    "low smoke incense",
+    "patram store",
+  ],
+  alternates: { canonical: "/" },
+  openGraph: {
+    title: "Buy Ayurvedic Dhoop, Incense & Attar Online | Patram Store",
+    description:
+      "Handmade herbal dhoop, incense and attar oils with custom aroma development and fast delivery across India.",
+    url: siteConfig.baseUrl,
+    images: [{ url: siteConfig.ogImage }],
+  },
+};
 
 export default async function HomePage() {
   const [featured, latest] = await Promise.all([

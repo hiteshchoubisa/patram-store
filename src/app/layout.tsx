@@ -7,20 +7,46 @@ import { CustomerAuthProvider } from "../contexts/CustomerAuthContext";
 import type { Metadata } from "next";
 import WhatsAppSupportBadge from "../components/support/WhatsAppSupportBadge";
 
-export const metadata = {
-  title: 'Patram Store',
-  description: 'Aromatic & Ayurvedic Products',
+export const metadata: Metadata = {
+  metadataBase: new URL(siteConfig.baseUrl),
+  title: siteConfig.name,
+  description: siteConfig.description,
+  keywords: [
+    "Patram",
+    "dhoop sticks",
+    "agarbatti",
+    "incense sticks",
+    "ayurvedic incense",
+    "herbal incense",
+    "attar oil",
+    "natural perfume",
+    "pooja essentials",
+    "buy incense online",
+  ],
+  openGraph: {
+    title: siteConfig.name,
+    description: siteConfig.description,
+    url: siteConfig.baseUrl,
+    siteName: siteConfig.name,
+    images: [{ url: siteConfig.ogImage }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteConfig.name,
+    description: siteConfig.description,
+    images: [siteConfig.ogImage],
+    site: siteConfig.twitterHandle,
+  },
   icons: {
     icon: [
-      { url: '/favicon.ico' },
-      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' }
+      { url: "/favicon.ico" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
     ],
-    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
-    other: [
-      { rel: 'manifest', url: '/site.webmanifest' }
-    ]
-  }
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+    other: [{ rel: "manifest", url: "/site.webmanifest" }],
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

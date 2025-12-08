@@ -3,6 +3,7 @@ import ProductDetail from "../../../components/product/ProductDetail";
 import InnerBanner from "@/components/layout/InnerBanner";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { siteConfig } from "@/config/site";
 
 interface ProductPageProps {
   params: Promise<{
@@ -86,20 +87,63 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
       };
     }
 
+    const canonical = `${siteConfig.baseUrl}/products/${slug}`;
+    const photoUrl = (() => {
+      if (product?.photo_url) {
+        return product.photo_url.startsWith("http")
+          ? product.photo_url
+          : supabase.storage.from("product-photos").getPublicUrl(product.photo_url).data.publicUrl;
+      }
+      if (product?.images && Array.isArray(product.images) && product.images.length > 0) {
+        const img = product.images[0];
+        return img.startsWith("http")
+          ? img
+          : supabase.storage.from("product-photos").getPublicUrl(img).data.publicUrl;
+      }
+      return siteConfig.ogImage;
+    })();
+
+    const keywords = Array.from(
+      new Set(
+        [
+          product.name,
+          product.category,
+          "buy online",
+          "ayurvedic",
+          "natural",
+          "handmade",
+          "dhoop sticks",
+          "incense sticks",
+          "agarbatti",
+          "attar oil",
+          "patram",
+        ]
+          .filter(Boolean)
+          .map((k) => (typeof k === "string" ? k.toLowerCase() : k))
+      )
+    );
+
+    const description = product.description
+      ? product.description.slice(0, 150)
+      : `Shop ${product.name} from Patram – natural ${product.category || "incense"} with safe, aromatic blends.`;
+
     return {
       title: product.name,
-      description: `Shop ${product.name} at Patram Store`,
+      description,
+      keywords,
+      alternates: { canonical },
       openGraph: {
         title: product.name,
-        description: `Shop ${product.name} at Patram Store`,
+        description,
         type: "website",
-        images: [],
+        url: canonical,
+        images: [{ url: photoUrl }],
       },
       twitter: {
         card: "summary_large_image",
         title: product.name,
-        description: `Shop ${product.name} at Patram Store`,
-        images: [],
+        description,
+        images: [photoUrl],
       }
     };
   } catch (error) {
