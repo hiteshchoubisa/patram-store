@@ -185,6 +185,14 @@ p {
   max-height: calc(100vh - 200px);
 }
 
+.footer{
+  p {
+    color: #fff;
+  }
+}
+.text-figure{
+  font-family: var(--font-montserrat);
+}
 /* product card styles */
 .product-dt{
   @apply py-3 flex;
@@ -206,6 +214,7 @@ p {
     font-family: var(--font-montserrat);
     color: #f45a29;
   }
+
 
   .sale-price{
     font-family: var(--font-montserrat);  
