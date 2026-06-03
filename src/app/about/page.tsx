@@ -26,7 +26,7 @@ export default function PoliciesPage() {
     </p>
 
     <p>
-        At Patram, we combine traditional fragrance-making techniques with modern manufacturing processes to create products that reflect both heritage and innovation. Our focus on excellence, reliability, and customer-centric service has helped us build lasting relationships with distributors, wholesalers, retailers, and private-label partners.
+        At Patram, we combine traditional fragrance-making techniques with modern manufacturing processes to create products that reflect both heritage and innovation. Our focus on excellence, reliability, and customer-centric service has helped us build lasting relationships with distributors, wholesalers, retailers.
     </p>
 
     <p>
