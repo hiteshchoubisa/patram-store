@@ -13,35 +13,16 @@ export default function Footer() {
             {siteConfig.description}
           </p>
         </div>
-
-        {/* Shop by category */}
-        <div>
-          <div className="text-sm font-semibold mb-3 uppercase tracking-wide">
-            Products
-          </div>
-          <ul className="space-y-1.5 text-xs">
-            <li>
-              <a href="/shop?category=dhoop-sticks" className="hover:text-orange-200 transition-colors">
-                Dhoop Sticks
-              </a>
-            </li>
-            <li>
-              <a href="/shop?category=incense-sticks" className="hover:text-orange-200 transition-colors">
-                Incense Sticks
-              </a>
-            </li>
-            <li>
-              <a href="/shop?category=attar" className="hover:text-orange-200 transition-colors">
-                Attar & Natural Perfumes
-              </a>
-            </li>
-            <li>
-              <a href="/shop?category=others" className="hover:text-orange-200 transition-colors">
-                Pooja & Other Essentials
-              </a>
-            </li>
-          </ul>
-        </div>
+<div>
+  <div className="text-sm font-semibold mb-3 uppercase tracking-wide">Products</div>
+  <ul className="space-y-1.5 text-xs">
+    <li><a href="/shop?category=dhoop" className="hover:text-orange-200 transition-colors">Dhoop Sticks</a></li>
+    <li><a href="/shop?category=incense" className="hover:text-orange-200 transition-colors">Incense Sticks</a></li>
+    <li><a href="/shop?category=attar" className="hover:text-orange-200 transition-colors">Attar &amp; Natural Perfumes</a></li>
+    <li><a href="/shop?category=others" className="hover:text-orange-200 transition-colors">Pooja &amp; Other Essentials</a></li>
+  </ul>
+</div>
+       
 
         {/* Navigate */}
         <div>
@@ -55,8 +36,8 @@ export default function Footer() {
               </a>
             </li>
             <li>
-              <a href="/about" className="hover:text-orange-200 transition-colors">
-                About
+              <a href="/policy" className="hover:text-orange-200 transition-colors">
+                Policies
               </a>
             </li>
             <li>

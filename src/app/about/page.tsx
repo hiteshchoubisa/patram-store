@@ -1,78 +1,60 @@
 import InnerBanner from "@/components/layout/InnerBanner";
 
-export default function AboutPage() {
+export default function PoliciesPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <InnerBanner
-        title="About Patram"
-        subtitle="Your trusted partner for authentic ayurvedic and herbal products."
+        title="About Patram
+"
+        subtitle="Your trusted partner for authentic ayurvedic and herbal products.
+
+"
       />
-      {/* Main Content */}
-      <div className="max-w-6xl mx-auto px-6 py-16">
-        <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
-          <div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Story</h2>
-            <p className="text-gray-600 leading-relaxed mb-4">
-              Patram has been dedicated to preserving and promoting the ancient wisdom of 
-              Ayurveda and traditional Indian medicine. For generations, we have been 
-              curating the finest herbs, natural ingredients, and traditional formulations.
-            </p>
-            <p className="text-gray-600 leading-relaxed">
-              Our commitment to authenticity and quality ensures that every product 
-              we offer meets the highest standards of purity and effectiveness.
-            </p>
-          </div>
-          <div className="bg-white rounded-lg shadow-lg p-8">
-            <img 
-              src="https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
-              alt="Traditional Ayurvedic Products"
-              className="w-full h-64 object-cover rounded-lg"
-            />
-          </div>
-        </div>
 
-        {/* Features */}
-        <div className="grid md:grid-cols-3 gap-8 mb-16">
-          <div className="text-center">
-            <div className="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">Authentic Products</h3>
-            <p className="text-gray-600">100% authentic ayurvedic and herbal products sourced directly from trusted suppliers.</p>
-          </div>
-          
-          <div className="text-center">
-            <div className="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-              </svg>
-            </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">Quality Assured</h3>
-            <p className="text-gray-600">Every product undergoes rigorous quality checks to ensure purity and effectiveness.</p>
-          </div>
-          
-          <div className="text-center">
-            <div className="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
-            </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">Fast Delivery</h3>
-            <p className="text-gray-600">Quick and reliable delivery to your doorstep with secure packaging.</p>
-          </div>
-        </div>
+      <div className="max-w-7xl mx-auto px-6 py-10">
+        <div className="row">
+          <div className="col-12">
+ 
+    <h2>About Patram Incense &amp; Dhoop Manufacturer</h2>
 
-        {/* Mission */}
-        <div className="bg-white rounded-lg shadow-lg p-8 text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Mission</h2>
-          <p className="text-lg text-gray-600 leading-relaxed max-w-4xl mx-auto">
-            To make authentic ayurvedic and herbal products accessible to everyone, 
-            while preserving traditional knowledge and promoting natural wellness. 
-            We believe in the power of nature to heal and nurture, and we're committed 
-            to bringing you the finest products that have been trusted for centuries.
-          </p>
+    <p>
+        Patram is a trusted manufacturer of premium-quality incense sticks (agarbatti) and dhoop products, dedicated to creating fragrances that inspire peace, positivity, and spiritual well-being. With a commitment to quality and craftsmanship, we carefully select the finest raw materials, natural ingredients, and aromatic oils to produce products that deliver a long-lasting and delightful fragrance experience.
+    </p>
+
+    <p>
+        Our extensive range includes traditional incense sticks, masala agarbatti, charcoal-free incense sticks, dhoop sticks, dhoop cones, and customized fragrance solutions designed to meet the diverse needs of customers across homes, temples, wellness centers, and commercial spaces. Every product is manufactured under strict quality standards to ensure consistency, purity, and customer satisfaction.
+    </p>
+
+    <p>
+        At Patram, we combine traditional fragrance-making techniques with modern manufacturing processes to create products that reflect both heritage and innovation. Our focus on excellence, reliability, and customer-centric service has helped us build lasting relationships with distributors, wholesalers, retailers, and private-label partners.
+    </p>
+
+    <p>
+        We strive to spread the essence of serenity and devotion through our carefully crafted incense and dhoop products, bringing moments of calm and positivity to people around the world.
+    </p>
+
+    <h3>Our Mission</h3>
+    <p>
+        To manufacture high-quality incense and dhoop products that enrich daily life with soothing fragrances while maintaining the highest standards of quality, sustainability, and customer satisfaction.
+    </p>
+
+    <h3>Our Vision</h3>
+    <p>
+        To become a globally recognized fragrance brand known for excellence, innovation, and authenticity in the incense and dhoop manufacturing industry.
+    </p>
+
+    <h3>Why Choose Patram?</h3>
+    <ul>
+        <li>Premium-quality raw materials and fragrances</li>
+        <li>Advanced manufacturing and quality control processes</li>
+        <li>Wide range of incense and dhoop products</li>
+        <li>Private labeling and custom fragrance solutions</li>
+        <li>Reliable supply and timely delivery</li>
+        <li>Commitment to customer satisfaction and long-term partnerships</li>
+    </ul>
+ 
+       
+</div>
         </div>
       </div>
     </div>

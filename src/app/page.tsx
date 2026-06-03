@@ -91,15 +91,15 @@ export default async function HomePage() {
       <section className="bg-banner">
         <div className="banner-section">
           <div className="flex flex-col justify-center items-start py-20">
-            <h1 className="heading1">Make Environment <br/><strong>Aromatic & Safe
+            <h1 className="heading1">Crafted from Nature,<br/><strong>Infused with Aroma
             </strong></h1>
-            <p className="mt-4 max-w-xl text-lg">Our Insence and Dhoop sticks are not only serving aroma, but also killing bacteria to safe our environment.</p>
+            <p className="mt-4 max-w-xl text-lg">Pure ingredients like <strong>Cow Dung, Temple Flowers, Clove, Kapoor & Neem</strong> blended into divine fragrance for a peaceful spiritual experience.</p>
             <div className="mt-8 flex gap-4">
               <a href="/shop" className="btn btn-primary">Shop Now</a>
             </div>
           </div>
           <Image
-                    src="/banner-patram.png"
+                    src="/banner-patram.jpg"
                     alt="Patram"
                     width={580}
                     height={530}
@@ -120,38 +120,63 @@ export default async function HomePage() {
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <a href="/shop?category=dhoop" className="category-card">
-      
-              <div className="p-4 text-center">
-                <h3 className="cat-title">Dhoop Sticks</h3>
-                <p className="text-sm text-gray-500 mt-1">Sacred Fragrance</p>
-              </div>
+       
+              <i className="icon-cat"><Image
+                    src="/icon-dhoop.svg"
+                    alt="Patram Dhoop"
+                    width={51}
+                    height={51}
+                    priority 
+                  /></i>
+                <h3 className="cat-title">Dhoop  </h3>
+                <p className="text-sm text-gray-500">Bambooless Sticks</p>
+            
         
           </a>
           
           <a href="/shop?category=incense" className="category-card">
-         
-              <div className="p-4 text-center">
-                <h3 className="cat-title">Incense Sticks</h3>
-                <p className="text-sm text-gray-500 mt-1">Aromatic Sticks</p>
-              </div>
+          
+              <i className="icon-cat"><Image
+                    src="/icon-incense.svg"
+                    alt="Patram Incense Sticks"
+                    width={51}
+                    height={51}
+                    priority 
+                  /></i>
+                <h3 className="cat-title">Incense  </h3>
+                <p className="text-sm text-gray-500">Bamboo Sticks</p>
+               
            
           </a>
           
           <a href="/shop?category=attar" className="category-card">
-         
-              <div className="p-4 text-center">
+          
+              <i className="icon-cat"><Image
+                    src="/icon-attar.svg"
+                    alt="Patram Attar"
+                    width={51}
+                    height={51}
+                    priority 
+                  /></i>
                 <h3 className="cat-title">Attar</h3>
-                <p className="text-sm text-gray-500 mt-1">Natural Perfumes</p>
-              </div>
+                <p className="text-sm text-gray-500">Natural Perfumes</p>
+              
        
           </a>
           
           <a href="/shop?category=others" className="category-card">
          
-              <div className="p-4 text-center">
+               
+              <i className="icon-cat"><Image
+                    src="/icon-other.svg"
+                    alt="Patram Other Essential"
+                    width={51}
+                    height={51}
+                    priority 
+                  /></i>
                 <h3 className="cat-title">Others</h3>
-                <p className="text-sm text-gray-500 mt-1">Essential Products</p>
-              </div>
+                <p className="text-sm text-gray-500 ">Essential Products</p>
+            
            
           </a>
         </div>
@@ -203,27 +228,27 @@ export default async function HomePage() {
       ))}
 
     {/* Customize Incense Section */}
-    <section className="section-block bg-[#fff8ef]">
+    <section className="section-block bg-[#D6EED4]">
         <div className="container">
           <div className="grid gap-10 lg:grid-cols-2 items-center">
+          <div className="bg-white  ">
+            <Image
+                    src="/patram-customize-store.jpg"
+                    alt="Patram Customize Incense and Dhoop"
+                    width={670}
+                    height={540}
+                    priority 
+                  />
+            </div>
             <div>
-              <p className="text-sm font-semibold uppercase tracking-wide text-[#f45a29] mb-3">
-                Customize Incense
-              </p>
-              <h2 className="heading2 text-3xl lg:text-4xl">
-                Co-create incense blends that match your ritual, event or brand.
+            
+              <h2 className="heading1 text-3xl lg:text-4xl">
+              Customized & Crafted Incense, <br/>as on Demand
               </h2>
               <p className="mt-4 text-base text-gray-700">
-                From herbal dhoop to luxury attar-infused sticks, Patram's lab can tailor aroma, burn time and packaging so you launch something truly personal.
+              At Patram, we understand that every customer is unique — and so is their fragrance preference. That’s why we offer fully customized incense and dhoop solutions designed especially for our valuable customers.
               </p>
-              <div className="mt-8 grid grid-cols-3 gap-4 max-w-md">
-                {customizationHighlights.map(item => (
-                  <div key={item.label} className="bg-white rounded-xl px-4 py-3 shadow-sm border border-orange-50 text-center">
-                    <p className="text-2xl font-bold text-gray-900">{item.value}</p>
-                    <p className="text-xs uppercase tracking-wide text-gray-500">{item.label}</p>
-                  </div>
-                ))}
-              </div>
+       
               <div className="mt-8 flex flex-wrap gap-4">
                 
                 <a
@@ -236,25 +261,33 @@ export default async function HomePage() {
                 </a>
               </div>
             </div>
-            <div className="bg-white rounded-2xl p-6 shadow-lg border border-orange-50">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">How customization works</h3>
-              <div className="space-y-5">
-                {customizationSteps.map((step, idx) => (
-                  <div key={step.title} className="flex gap-4">
-                    <div className="h-10 w-10 rounded-full bg-[#f45a29]/10 text-[#f45a29] flex items-center justify-center font-semibold">
-                      {idx + 1}
-                    </div>
-                    <div>
-                      <p className="font-semibold text-gray-900">{step.title}</p>
-                      <p className="text-sm text-gray-600">{step.description}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-6 rounded-xl border border-dashed border-gray-200 bg-gray-50 p-4 text-sm text-gray-600">
-                Need something rush? Share your target fragrance notes and delivery date—our team replies within 24 hours.
-              </div>
+           
+          </div>
+        </div>
+      </section>
+
+      <section className="section-block bg-[#fff8ef]">
+        <div className="container">
+          <div className="grid gap-10 lg:grid-cols-2 items-center">
+            <div>
+            
+              <h2 className="heading1 text-3xl lg:text-4xl">
+              Patram Membership Plan’s <br/>5 Benefits
+              </h2>
+              <p className="mt-4 text-base text-gray-700">
+             Experience fragrance like never before with our exclusive membership program, designed especially for our loyal and valuable customers.
+              </p>
+       
+       <ul>
+        <li>We Provide <strong>Free Samples</strong> of All Products to our members.</li>
+        <li>Up to <strong>15% Discounts</strong> on every Purchase.</li>
+        <li><strong>Customize</strong> Incense as per Requirements.</li>
+        <li>On Demand costing <strong>Saving Plan</strong>.</li>
+        <li>Festive <strong>offers</strong> & surprise <strong>gifts</strong></li>
+       </ul>
+               
             </div>
+         
           </div>
         </div>
       </section>

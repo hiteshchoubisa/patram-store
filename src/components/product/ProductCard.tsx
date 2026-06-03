@@ -50,17 +50,22 @@ export default function ProductCard({ product }: ProductCardProps) {
   const hasHoverImage = !!hoverImage && hoverImage !== baseImage;
 
   return (
-    <div className="group border rounded-lg p-3 bg-white shadow-sm hover:shadow-md transition">
+    <div className="group  product-bl  transition">
      
 
       <a
         href={`/products/${(product as any).slug || product.id}`}
-        className="block aspect-[1/1] bg-neutral-100 relative overflow-hidden"
+        className="pro-img  block aspect-[1/1] bg-neutral-100 relative overflow-hidden"
       >
-        <ProductImage product={product} className="rounded-md transition-all duration-500 group-hover:scale-105" />
+        <ProductImage product={product} className="transition-all duration-500 group-hover:scale-105" />
       </a>
 
       <div className="product-dt">
+      {product.category && (
+          <span className="pro-cat-title">
+            {product.category}
+          </span>
+        )}
         <a
           href={`/products/${(product as any).slug || product.id}`}
           className="pro-title"
@@ -68,11 +73,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           {product.name}
         </a>
 
-        {product.category && (
-          <span className="pro-cat-title">
-            {product.category}
-          </span>
-        )}
+        
         {!product.category && (product as any).categorySlug && (
           <span className="pro-cat-title">
             {(product as any).categorySlug.replace(/-/g, " ")}
@@ -95,17 +96,12 @@ export default function ProductCard({ product }: ProductCardProps) {
                 price: product.price,
                 qty: 1,
                 photo: baseImage,
-              },
-              false
+              }
             );
             setAddedToCart(true);
             setTimeout(() => setAddedToCart(false), 2000);
           }}
-          className={`mt-auto w-full rounded-md py-2 text-xs font-medium transition-all duration-200 ${
-            addedToCart
-              ? "bg-green-600 text-white"
-              : "bg-neutral-900 text-white hover:bg-neutral-800 group-hover:bg-indigo-600 group-hover:shadow-md"
-          }`}
+          className={`btn-cart transition-all duration-200`}
         >
           {addedToCart ? "✓ Added to Cart" : "Add to Cart"}
         </button>

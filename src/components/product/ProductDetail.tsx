@@ -45,7 +45,7 @@ export default function ProductDetail({ product, relatedProducts = [] }: Product
       price: product.price,
       qty: quantity,
       photo: product.photo
-    }, false); // false = don't open cart popup
+    });
     setAddedToCart(true);
     setTimeout(() => setAddedToCart(false), 2000); // Reset after 2 seconds
   };

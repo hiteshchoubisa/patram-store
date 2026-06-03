@@ -60,8 +60,8 @@ export default function Header() {
 
   return (
     <header className={`header-bl ${scrolled ? "scrolled" : ""} ${showHeader ? "" : "hide"}`}>
-      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between gap-6">
-        {/* Logo */}
+      <div className="container">
+        <div className="header-subblock">
         <a href="/" className="flex items-center" aria-label="Patram Home">
           <Image
             src="/logo-1.svg"
@@ -69,7 +69,7 @@ export default function Header() {
             width={120}
             height={32}
             priority
-            className="h-13 w-auto"
+            className="h-13 w-auto logo"
           />
         </a>
         
@@ -167,6 +167,7 @@ export default function Header() {
             </svg>
           </button>
         </div>
+        </div>
       </div>
       
       {/* Mobile Menu Overlay */}
@@ -189,7 +190,7 @@ export default function Header() {
             
             <div className="mobile-menu-content">
               <a href="/" className="mobile-menu-link" onClick={() => setIsMobileMenuOpen(false)}>Home</a>
-              <a href="/about" className="mobile-menu-link" onClick={() => setIsMobileMenuOpen(false)}>About</a>
+              <a href="/about" className="mobile-menu-link" onClick={() => setIsMobileMenuOpen(false)}>Policies</a>
               <a href="/shop" className="mobile-menu-link" onClick={() => setIsMobileMenuOpen(false)}>Shop</a>
               <a href="/contact" className="mobile-menu-link" onClick={() => setIsMobileMenuOpen(false)}>Contact</a>
               <a href="/track-order" className="mobile-menu-link" onClick={() => setIsMobileMenuOpen(false)}>Track Order</a>
