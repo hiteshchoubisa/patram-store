@@ -8,11 +8,11 @@ export default function PolicyPage() {
         subtitle="Terms, Privacy, Shipping, Return & Refund Policies"
       />
 
-      <div className="container py-5">
+      <div className="max-w-7xl mx-auto px-6 py-10">
         <div className="row">
           <div className="col-12">
 
-            <h2>Terms and Conditions (T&C)</h2>
+            <h2 className="heading2">Terms and Conditions (T&C)</h2>
 
             <p>
               These Terms and Conditions govern your use of this website and the
@@ -125,10 +125,97 @@ export default function PolicyPage() {
             <p>
               <strong>Mobile:</strong> +91 8107514654
             </p>
+<hr/>
+            
+    <h2 className="heading2">Privacy Policy</h2>
+
+    <p>
+        This Privacy Policy outlines how personal information is collected, used,
+        and safeguarded when you interact with this website. By accessing or using
+        the website, you agree to the practices described below.
+    </p>
+
+    <h3>1. Information We Collect</h3>
+    <p>We may collect the following types of information:</p>
+    <ul>
+        <li>
+            <strong>Personal Information:</strong> Name, phone number, email address,
+            billing/shipping address.
+        </li>
+        <li>
+            <strong>Payment Information:</strong> Used to process orders securely
+            through third-party payment gateways.
+        </li>
+        <li>
+            <strong>Technical Information:</strong> IP address, browser type, device
+            information, and usage data via cookies or similar technologies.
+        </li>
+    </ul>
+
+    <h3 >2. How We Use Your Information</h3>
+    <ul>
+        <li>To process and deliver orders.</li>
+        <li>To send transactional communications such as order updates or shipping alerts.</li>
+        <li>To respond to customer inquiries or service requests.</li>
+        <li>To improve website functionality, services, and user experience.</li>
+        <li>For marketing purposes (only with your explicit consent).</li>
+    </ul>
+
+    <h3>3. Data Sharing</h3>
+    <ul>
+        <li>We do not sell, rent, or trade your personal data.</li>
+        <li>
+            We may share necessary information with third-party service providers
+            such as payment gateways, delivery partners, or IT service providers —
+            only to fulfill your order or maintain the website.
+        </li>
+        <li>
+            Personal information may be disclosed if required by law or legal proceedings.
+        </li>
+    </ul>
+
+    <h3 >4. Data Security</h3>
+    <p>
+        We implement reasonable security measures to protect your data from
+        unauthorized access, alteration, or disclosure.
+    </p>
+    <p>
+        However, no online transmission is 100% secure. You acknowledge this risk
+        when using the site.
+    </p>
+
+    <h3>5. Cookies and Tracking Technologies</h3>
+    <p>
+        Cookies are used to personalize your experience, analyze site traffic,
+        and provide relevant advertisements.
+    </p>
+    <p>
+        You can manage or disable cookies via your browser settings, although this
+        may affect site functionality.
+    </p>
+
+    <h3>6. Third-Party Links</h3>
+    <p>
+        This website may contain links to third-party websites. We are not
+        responsible for the privacy practices or content of those websites.
+    </p>
+
+    <h3>7. Your Rights</h3>
+    <ul>
+        <li>You may request access to or correction of your personal data.</li>
+        <li>You may opt out of marketing communications at any time.</li>
+    </ul>
+
+    <h3>8. Changes to This Policy</h3>
+    <p>
+        This Privacy Policy may be updated periodically. Continued use of the
+        website after changes indicates acceptance of the revised policy.
+    </p>
+ 
 
             <hr />
 
-            <h2>Shipping Policy</h2>
+            <h2  className="heading2">Shipping Policy</h2>
 
 <p>Orders are typically processed within 1-3 business days.</p>
 
@@ -142,7 +229,7 @@ export default function PolicyPage() {
 
 <hr />
 
-<h2>Return &amp; Refund Policy</h2>
+<h2 className="heading2">Return &amp; Refund Policy</h2>
 
 <h3>Return Policy</h3>
 <p>Returns are accepted within 7 days of delivery for damaged or defective items.</p>

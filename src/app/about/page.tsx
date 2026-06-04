@@ -15,7 +15,7 @@ export default function PoliciesPage() {
         <div className="row">
           <div className="col-12">
  
-    <h2>About Patram Incense &amp; Dhoop Manufacturer</h2>
+    <h2 className="heading2">About Patram Incense &amp; Dhoop Manufacturer</h2>
 
     <p>
         Patram is a trusted manufacturer of premium-quality incense sticks (agarbatti) and dhoop products, dedicated to creating fragrances that inspire peace, positivity, and spiritual well-being. With a commitment to quality and craftsmanship, we carefully select the finest raw materials, natural ingredients, and aromatic oils to produce products that deliver a long-lasting and delightful fragrance experience.
