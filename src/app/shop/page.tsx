@@ -29,7 +29,7 @@ export default async function ShopPage(props: { searchParams: Promise<SearchPara
     <div className="min-h-screen bg-white">
       <InnerBanner
         title="Shop Patram"
-        subtitle="Browse our full range of ayurvedic and aromatic essentials."
+        subtitle="Browse our full range of Aushadhi and aromatic essentials."
       />
 
       <div className="max-w-7xl mx-auto px-6 py-10">

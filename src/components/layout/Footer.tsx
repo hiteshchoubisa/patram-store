@@ -101,7 +101,7 @@ export default function Footer() {
           <span>
             © {new Date().getFullYear()} {siteConfig.company.name}. All rights reserved.
           </span>
-          <span>Handmade Ayurvedic incense & attar crafted in Udaipur, Rajasthan.</span>
+          <span>Handmade Aushadhi incense & attar crafted in Udaipur, Rajasthan.</span>
         </div>
       </div>
     </footer>

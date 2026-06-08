@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     "dhoop sticks",
     "agarbatti",
     "incense sticks",
-    "ayurvedic incense",
+    "Aushadhi incense",
     "herbal incense",
     "attar oil",
     "natural perfume",

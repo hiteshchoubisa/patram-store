@@ -329,7 +329,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       <div className="min-h-screen bg-white">
         <InnerBanner
           title="Shop Patram"
-          subtitle="Browse our full range of ayurvedic and aromatic essentials."
+          subtitle="Browse our full range of Aushadhi and aromatic essentials."
         />
         <ProductDetail product={productData} relatedProducts={relatedProducts} />
       </div>

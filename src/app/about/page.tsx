@@ -6,7 +6,7 @@ export default function PoliciesPage() {
       <InnerBanner
         title="About Patram
 "
-        subtitle="Your trusted partner for authentic ayurvedic and herbal products.
+        subtitle="Your trusted partner for authentic Aushadhi  and herbal products.
 
 "
       />

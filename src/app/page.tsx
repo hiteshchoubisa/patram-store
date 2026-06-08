@@ -9,14 +9,14 @@ import { siteConfig } from "../config/site";
 export const revalidate = 300;
 
 export const metadata: Metadata = {
-  title: "Buy Ayurvedic Dhoop, Incense & Attar Online | Patram Store",
+  title: "Buy Aushadhi  Dhoop, Incense & Attar Online | Patram Store",
   description:
-    "Shop handcrafted Ayurvedic dhoop sticks, incense (agarbatti), attar oils and pooja essentials. Natural ingredients, safe smoke, fast delivery and custom aroma development.",
+    "Shop handcrafted Aushadhi dhoop sticks, incense (agarbatti), attar oils and pooja essentials. Natural ingredients, safe smoke, fast delivery and custom aroma development.",
   keywords: [
     "buy dhoop online",
-    "ayurvedic dhoop sticks",
+    "Aushadhi dhoop sticks",
     "natural incense sticks",
-    "agarbatti online",
+    "Aushadhi agarbatti online",
     "herbal incense",
     "attar oil",
     "pooja essentials",
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: "/" },
   openGraph: {
-    title: "Buy Ayurvedic Dhoop, Incense & Attar Online | Patram Store",
+    title: "Buy Aushadhi Dhoop, Incense & Attar Online | Patram Store",
     description:
       "Handmade herbal dhoop, incense and attar oils with custom aroma development and fast delivery across India.",
     url: siteConfig.baseUrl,
