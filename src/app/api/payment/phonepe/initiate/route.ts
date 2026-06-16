@@ -5,6 +5,7 @@ import {
   getPhonePeConfig,
   initiatePayment,
 } from "@/lib/phonepe";
+import { getSiteUrl } from "@/lib/siteUrl";
 
 function getSupabaseAdmin() {
   const url =
@@ -34,12 +35,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const siteUrl =
-      process.env.NEXT_PUBLIC_SITE_URL ??
-      (process.env.VERCEL_URL
-        ? `https://${process.env.VERCEL_URL}`
-        : "http://localhost:3000");
-
+    const siteUrl = getSiteUrl(request);
     const redirectUrl = `${siteUrl}/checkout/payment-callback?orderId=${orderId}&merchantOrderId=${encodeURIComponent(merchantOrderId)}`;
 
     const config = getPhonePeConfig();

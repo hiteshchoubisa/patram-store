@@ -25,12 +25,15 @@ export function getPhonePeConfig(): PhonePeConfig {
   const clientSecret = process.env.PHONEPE_CLIENT_SECRET ?? "";
   const clientVersion = process.env.PHONEPE_CLIENT_VERSION ?? "1";
   const merchantId = process.env.PHONEPE_MERCHANT_ID ?? "";
+  // Merchant IDs starting with SU are PhonePe sandbox/UAT accounts
   const env =
-    process.env.PHONEPE_ENV === "production" ? "production" : "sandbox";
+    process.env.PHONEPE_ENV === "production" && !merchantId.startsWith("SU")
+      ? "production"
+      : "sandbox";
 
   if (!clientId || !clientSecret || !merchantId) {
     throw new Error(
-      "PhonePe credentials missing: set PHONEPE_CLIENT_ID, PHONEPE_CLIENT_SECRET, and PHONEPE_MERCHANT_ID in .env.local",
+      "PhonePe credentials missing on server. Add PHONEPE_CLIENT_ID, PHONEPE_CLIENT_SECRET, and PHONEPE_MERCHANT_ID to Vercel Environment Variables and redeploy.",
     );
   }
 

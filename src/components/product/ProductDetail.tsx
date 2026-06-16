@@ -157,7 +157,7 @@ export default function ProductDetail({ product, relatedProducts = [] }: Product
                     : 'bg-indigo-600 hover:bg-indigo-700 text-white'
                 }`}
               >
-                {addedToCart ? '✓ Added to Cart' : 'Add to Cart'}
+                {addedToCart ? '✓ Added' : 'Add to Cart'}
               </button>
               <button 
                 onClick={handleBuyNow}
