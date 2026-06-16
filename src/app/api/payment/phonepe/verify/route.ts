@@ -4,7 +4,7 @@ import {
   checkOrderStatus,
   getAuthToken,
   getPhonePeConfig,
-  mapPaymentStatus,
+  resolvePaymentOutcome,
 } from "@/lib/phonepe";
 
 function getSupabaseAdmin() {
@@ -36,7 +36,8 @@ export async function POST(request: NextRequest) {
     const token = await getAuthToken(config);
     const status = await checkOrderStatus(config, token, merchantOrderId);
 
-    const paymentStatus = mapPaymentStatus(status.state);
+    const paymentOutcome = resolvePaymentOutcome(status);
+    const paymentStatus = paymentOutcome;
     const transactionId =
       status.paymentDetails?.[0]?.transactionId ?? status.orderId;
 
@@ -46,11 +47,11 @@ export async function POST(request: NextRequest) {
       phonepe_merchant_order_id: merchantOrderId,
     };
 
-    if (transactionId) {
+    if (transactionId && paymentOutcome !== "cancelled") {
       updateData.payment_id = transactionId;
     }
 
-    if (paymentStatus === "paid") {
+    if (paymentOutcome === "paid") {
       updateData.status = "Confirmed";
     }
 
@@ -67,7 +68,10 @@ export async function POST(request: NextRequest) {
       success: true,
       state: status.state,
       paymentStatus,
+      paymentOutcome,
+      cancelled: paymentOutcome === "cancelled",
       orderId: orderId ?? status.metaInfo?.udf1,
+      merchantOrderId,
       phonepeOrderId: status.orderId,
       transactionId,
     });

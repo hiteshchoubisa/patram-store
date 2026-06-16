@@ -165,13 +165,23 @@ export async function checkOrderStatus(
   };
 }
 
-export function mapPaymentStatus(state: string): string {
-  switch (state) {
-    case "COMPLETED":
-      return "paid";
-    case "FAILED":
-      return "failed";
-    default:
-      return "pending";
+export type PaymentOutcome = "paid" | "failed" | "cancelled" | "pending";
+
+export function resolvePaymentOutcome(status: {
+  state: string;
+  paymentDetails?: Array<{ transactionId: string; state: string }>;
+}): PaymentOutcome {
+  if (status.state === "COMPLETED") return "paid";
+  if (status.state === "FAILED") return "failed";
+  if (
+    status.state === "PENDING" &&
+    (!status.paymentDetails || status.paymentDetails.length === 0)
+  ) {
+    return "cancelled";
   }
+  return "pending";
+}
+
+export function mapPaymentStatus(outcome: PaymentOutcome): string {
+  return outcome;
 }

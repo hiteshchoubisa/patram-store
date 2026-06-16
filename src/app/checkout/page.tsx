@@ -233,7 +233,6 @@ export default function CheckoutPage() {
       throw new Error(paymentData.message || "Failed to initiate PhonePe payment");
     }
 
-    clear();
     window.location.href = paymentData.redirectUrl;
   };
 
@@ -315,10 +314,16 @@ export default function CheckoutPage() {
   };
 
   const getAvailablePaymentMethods = () => {
-    const methods = [
+    const methods: {
+      id: string;
+      value: "phonepe" | "cod";
+      title: string;
+      description: string;
+      icon: React.ReactNode;
+    }[] = [
       {
         id: 'phonepe',
-        value: 'phonepe' as const,
+        value: 'phonepe',
         title: 'PhonePe / UPI / Cards',
         description: 'Pay securely via PhonePe, UPI, debit or credit card',
         icon: (

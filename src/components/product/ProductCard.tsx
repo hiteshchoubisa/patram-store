@@ -103,7 +103,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           }}
           className={`btn-cart transition-all duration-200`}
         >
-          {addedToCart ? "✓ Added to Cart" : "Add to Cart"}
+          {addedToCart ? "✓ Added" : "Add to Cart"}
         </button>
       </div>
     </div>
