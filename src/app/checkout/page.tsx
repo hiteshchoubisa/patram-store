@@ -14,7 +14,7 @@ interface CheckoutForm {
   pincode: string;
   state: string;
   country: string;
-  paymentMethod: "cod";
+  paymentMethod: "cod" | "phonepe";
 }
 
 export default function CheckoutPage() {
@@ -150,7 +150,11 @@ export default function CheckoutPage() {
     setOrderProcessing(true);
 
     try {
-      await handleCODPayment();
+      if (form.paymentMethod === "phonepe") {
+        await handlePhonePePayment();
+      } else {
+        await handleCODPayment();
+      }
     } catch (error) {
       console.error("Checkout error:", error);
       const errorMessage = error instanceof Error ? error.message : "Something went wrong. Please try again.";
@@ -162,7 +166,7 @@ export default function CheckoutPage() {
   };
 
 
-  const handleCODPayment = async () => {
+  const createOrder = async (paymentMethod: string) => {
     const orderData = {
       items: lines.map(item => ({
         product_id: item.id,
@@ -182,80 +186,61 @@ export default function CheckoutPage() {
         state: form.state,
         country: form.country
       },
-      paymentMethod: "cod"
+      paymentMethod
     };
 
-    console.log("Sending order data:", orderData);
-    console.log("Order data validation:", {
-      hasItems: orderData.items.length > 0,
-      total: orderData.total,
-      hasShippingAddress: !!orderData.shippingAddress,
-      hasName: !!orderData.shippingAddress.name,
-      hasPhone: !!orderData.shippingAddress.phone,
-      itemsDetails: orderData.items.map(item => ({
-        id: item.product_id,
-        name: item.product_name,
-        qty: item.quantity,
-        price: item.price
-      }))
-    });
-    
     const response = await fetch("/api/orders", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(orderData)
     });
 
-    console.log("Response status:", response.status);
-    console.log("Response ok:", response.ok);
-
-    if (response.ok) {
-      const result = await response.json();
-      console.log("Order created successfully:", result);
-      clear();
-      // Redirect to thank you page with order ID
-      router.push(`/thank-you?orderId=${result.orderId}`);
-    } else {
+    if (!response.ok) {
+      const responseText = await response.text();
       let errorData;
       try {
-        const responseText = await response.text();
-        console.error("Raw error response:", responseText);
-        console.error("Response headers:", Object.fromEntries(response.headers.entries()));
-        
-        if (responseText) {
-          try {
-            errorData = JSON.parse(responseText);
-            console.error("Parsed error data:", errorData);
-          } catch (jsonError) {
-            console.error("JSON parse error:", jsonError);
-            errorData = { 
-              message: "Invalid JSON response",
-              rawResponse: responseText,
-              status: response.status,
-              statusText: response.statusText
-            };
-          }
-        } else {
-          errorData = { 
-            message: "Empty response from server",
-            status: response.status,
-            statusText: response.statusText
-          };
-        }
-      } catch (parseError) {
-        console.error("Failed to parse error response:", parseError);
-        errorData = { 
-          message: "Failed to parse error response",
-          parseError: parseError instanceof Error ? parseError.message : String(parseError),
-          status: response.status,
-          statusText: response.statusText
-        };
+        errorData = responseText ? JSON.parse(responseText) : { message: "Failed to create order" };
+      } catch {
+        errorData = { message: responseText || "Failed to create order" };
       }
-      console.error("Order creation error:", errorData);
-      console.error("Response status:", response.status);
-      console.error("Response statusText:", response.statusText);
       throw new Error(errorData.message || "Failed to create order");
     }
+
+    return response.json();
+  };
+
+  const handlePhonePePayment = async () => {
+    const result = await createOrder("phonepe");
+    const orderId = result.orderId;
+    const merchantOrderId = (result.orderNumber || `ORD-${orderId}`)
+      .replace(/[^a-zA-Z0-9_-]/g, "-")
+      .slice(0, 63);
+
+    const paymentResponse = await fetch("/api/payment/phonepe/initiate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        orderId,
+        merchantOrderId,
+        amount: total,
+        phone: form.phone,
+      }),
+    });
+
+    const paymentData = await paymentResponse.json();
+
+    if (!paymentResponse.ok || !paymentData.redirectUrl) {
+      throw new Error(paymentData.message || "Failed to initiate PhonePe payment");
+    }
+
+    clear();
+    window.location.href = paymentData.redirectUrl;
+  };
+
+  const handleCODPayment = async () => {
+    const result = await createOrder("cod");
+    clear();
+    router.push(`/thank-you?orderId=${result.orderId}`);
   };
 
   // Search for client by phone number
@@ -329,25 +314,44 @@ export default function CheckoutPage() {
     );
   };
 
-  // Get available payment methods - only COD for now
   const getAvailablePaymentMethods = () => {
-    return [{
-      id: 'cod',
-      value: 'cod',
-      title: 'Cash on Delivery',
-      description: 'Pay when your order arrives',
-      icon: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-        </svg>
-      )
-    }];
+    const methods = [
+      {
+        id: 'phonepe',
+        value: 'phonepe' as const,
+        title: 'PhonePe / UPI / Cards',
+        description: 'Pay securely via PhonePe, UPI, debit or credit card',
+        icon: (
+          <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z" />
+          </svg>
+        )
+      }
+    ];
+
+    if (isUdaipurAddress()) {
+      methods.push({
+        id: 'cod',
+        value: 'cod' as const,
+        title: 'Cash on Delivery',
+        description: 'Pay when your order arrives (Udaipur only)',
+        icon: (
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+        )
+      });
+    }
+
+    return methods;
   };
 
-  // Auto-select payment method - only COD available
   useEffect(() => {
-    setForm(prev => ({ ...prev, paymentMethod: 'cod' }));
-  }, []);
+    const methods = getAvailablePaymentMethods();
+    if (!methods.find(m => m.value === form.paymentMethod)) {
+      setForm(prev => ({ ...prev, paymentMethod: methods[0].value }));
+    }
+  }, [form.city, form.state, form.address]);
 
   return (
     <div className="min-h-screen bg-gray-50 pb-12">
@@ -652,6 +656,8 @@ export default function CheckoutPage() {
                       <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
                       Processing...
                     </div>
+                  ) : form.paymentMethod === "phonepe" ? (
+                    `Pay with PhonePe - ₹${total.toLocaleString("en-IN")}`
                   ) : (
                     `Place Order - ₹${total.toLocaleString("en-IN")}`
                   )}

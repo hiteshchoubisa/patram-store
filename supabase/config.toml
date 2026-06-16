@@ -1,0 +1,8 @@
+[functions.phonepe-initiate]
+verify_jwt = false
+
+[functions.phonepe-verify]
+verify_jwt = false
+
+[functions.phonepe-webhook]
+verify_jwt = false
