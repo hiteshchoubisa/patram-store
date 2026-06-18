@@ -25,11 +25,8 @@ export function getPhonePeConfig(): PhonePeConfig {
   const clientSecret = process.env.PHONEPE_CLIENT_SECRET ?? "";
   const clientVersion = process.env.PHONEPE_CLIENT_VERSION ?? "1";
   const merchantId = process.env.PHONEPE_MERCHANT_ID ?? "";
-  // Merchant IDs starting with SU are PhonePe sandbox/UAT accounts
   const env =
-    process.env.PHONEPE_ENV === "production" && !merchantId.startsWith("SU")
-      ? "production"
-      : "sandbox";
+    process.env.PHONEPE_ENV === "production" ? "production" : "sandbox";
 
   if (!clientId || !clientSecret || !merchantId) {
     throw new Error(
@@ -60,8 +57,12 @@ export async function getAuthToken(config: PhonePeConfig): Promise<string> {
   const data = await response.json();
 
   if (!response.ok || !data.access_token) {
+    const hint =
+      response.status === 401
+        ? " Check PHONEPE_CLIENT_ID, PHONEPE_CLIENT_SECRET, and PHONEPE_ENV (production keys need PHONEPE_ENV=production)."
+        : "";
     throw new Error(
-      `PhonePe auth failed: ${data.message ?? JSON.stringify(data)}`,
+      `PhonePe auth failed (${response.status}): ${data.message ?? JSON.stringify(data)}.${hint}`,
     );
   }
 
