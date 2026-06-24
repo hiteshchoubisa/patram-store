@@ -247,8 +247,12 @@ p {
 
   .pro-title {
     @apply  font-bold line-clamp-2  transition-colors duration-200;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 700;
+
+    @media screen and (max-width: 768px) {
+      font-size: 13px;
+    }
   }
 
   .pro-cat-title{
@@ -404,9 +408,10 @@ p {
 }
 
 .cart-drawer {
-  @apply w-full max-w-md bg-white h-full shadow-2xl flex flex-col transform transition-transform duration-300 ease-in-out;
+  @apply w-full max-w-md bg-white   shadow-2xl flex flex-col transform transition-transform duration-300 ease-in-out;
   box-shadow: -10px 0 25px -5px rgba(0, 0, 0, 0.1), -4px 0 6px -2px rgba(0, 0, 0, 0.05);
   width: 50%;
+  height: 100dvh;
   min-width: 300px;
   padding: 50px 0 100px;
   position: relative;
@@ -821,7 +826,7 @@ p {
 }
 
 .checkout-item-image {
-  @apply w-12 h-12 rounded-md bg-gray-200 overflow-hidden flex-shrink-0;
+  @apply w-28 h-28 rounded-md bg-gray-200 overflow-hidden flex-shrink-0;
 }
 
 .checkout-item-image img {

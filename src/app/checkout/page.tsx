@@ -19,7 +19,7 @@ interface CheckoutForm {
 }
 
 export default function CheckoutPage() {
-  const { lines, total, clear } = useCart();
+  const { lines, total, clear, remove  } = useCart();
   const { customer, isAuthenticated } = useCustomerAuth();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -46,6 +46,12 @@ export default function CheckoutPage() {
       clear();
     }
   };
+
+  const handleRemoveItem = (id: string) => {
+  if (confirm("Remove this item from cart?")) {
+    remove(id);
+  }
+};
 
   // Pre-fill form with customer data if logged in
   useEffect(() => {
@@ -592,8 +598,17 @@ export default function CheckoutPage() {
                       <div className="checkout-item-details">
                         <div className="checkout-item-name">{item.name}</div>
                         <div className="checkout-item-qty">Qty: {item.qty}</div>
+                         <button
+                        type="button"
+                        onClick={() => handleRemoveItem(item.id)}
+                        className="text-red-500 hover:text-red-700 text-sm font-medium transition"
+                        title="Remove item"
+                      >
+                        Remove
+                      </button>
                       </div>
                       <div className="checkout-item-price">₹{(item.price * item.qty).toLocaleString("en-IN")}</div>
+                     
                     </div>
                   ))}
                 </div>
