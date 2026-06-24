@@ -176,8 +176,8 @@ export default function ProductDetail({ product, relatedProducts = [] }: Product
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                     </svg>
                   </div>
-                  <h4 className="font-semibold text-gray-900">Free Shipping</h4>
-                  <p className="text-sm text-gray-500">On orders over ₹500</p>
+                  <h4 className="font-semibold text-gray-900">Shipping</h4>
+                  <p className="text-sm text-gray-500">Free above ₹249 · Free in Udaipur · else ₹49</p>
                 </div>
                 <div className="text-center">
                   <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-2">

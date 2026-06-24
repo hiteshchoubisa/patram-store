@@ -58,6 +58,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Header />
             <main className="flex-1">{children}</main>
             <Footer />
+            <div
+      aria-label="Free Samples support"
+      className="free-samples-badge   z-30"
+    >
+      <div
+        
+        className="group flex items-center gap-2 bg-red-500 text-white px-2 py-2 rounded-full shadow-lg "
+      > <span className="text-xs">Free Shipping + Samples on Orders above ₹249/-</span>
+       
+      </div>
+    </div>
           </CartProvider>
         </CustomerAuthProvider>
         <WhatsAppSupportBadge />

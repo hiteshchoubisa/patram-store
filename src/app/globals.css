@@ -247,7 +247,8 @@ p {
 
   .pro-title {
     @apply  font-bold line-clamp-2  transition-colors duration-200;
-    font-size: medium;
+    font-size: 13px;
+    font-weight: 700;
   }
 
   .pro-cat-title{
@@ -407,14 +408,31 @@ p {
   box-shadow: -10px 0 25px -5px rgba(0, 0, 0, 0.1), -4px 0 6px -2px rgba(0, 0, 0, 0.05);
   width: 50%;
   min-width: 300px;
+  padding: 50px 0 100px;
+  position: relative;
+
+  .cart-item-name{
+    font-size: 13px;
+  }
+
+  .cart-close{
+    position: absolute;
+    right: 0;
+    top: 9px;
+    z-index: 50;
+    cursor: pointer;  
+  }
 }
 
 .cart-header {
   @apply p-6 flex items-center justify-between border-b border-gray-100 bg-gradient-to-r from-indigo-50 to-purple-50;
+  position: absolute;
+  top: 0;
+  width: 100%;
 }
 
 .cart-title {
-  @apply text-xl font-bold text-gray-900;
+  @apply font-bold text-gray-900;
 }
 
 .cart-close {
@@ -482,7 +500,38 @@ p {
 }
 
 .cart-footer {
-  @apply border-t border-gray-200 p-6 space-y-4 bg-gray-50;
+  @apply border-t border-gray-200   space-y-4 bg-gray-50;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: calc(var(--spacing) * 4);
+}
+
+.whatsapp-badge{
+  transform: rotate(-90deg);
+    bottom: 115px;
+    right: -60px;
+    border-radius: 0 !important;
+
+    .group{
+      border-radius: 10px 10px 0 0;
+    }
+}
+
+.free-samples-badge{  
+  bottom: 0;
+  position: fixed;
+  width: 100%;
+  z-index: 10;
+
+  .group{
+    border-radius: 10px 10px 0 0;
+    justify-content: center;
+  }
+}
+
+.cart-drawer .cart-header{
+  padding: calc(var(--spacing) * 4);
 }
 
 .cart-total {
@@ -490,7 +539,8 @@ p {
 }
 
 .cart-checkout-btn {
-  @apply w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg py-3 text-sm font-semibold transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2;
+  background-color: #F49229; 
+  @apply w-full           disabled:cursor-not-allowed text-white rounded-lg py-3 text-sm font-semibold transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2;
 }
 
 .cart-clear-btn {

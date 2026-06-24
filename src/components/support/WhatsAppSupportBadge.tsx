@@ -11,18 +11,19 @@ export default function WhatsAppSupportBadge() {
   );
 
   return (
+    
     <div
       aria-label="WhatsApp support"
-      className="fixed right-4 bottom-6 z-50"
+      className="whatsapp-badge fixed  z-10"
     >
       <Link
         href={href()}
         target="_blank"
         rel="noopener noreferrer"
-        className="group flex items-center gap-2 bg-green-500 text-white px-2 py-2 rounded-full shadow-lg hover:bg-green-600 transition"
-      >
+        className="group flex items-center gap-2 bg-green-500 text-white px-2 py-2  shadow-lg hover:bg-green-600 transition"
+      >  
         <FaWhatsapp className="text-xl" aria-hidden="true" />
-        
+        <span className="text-xs">Chat for Customize</span>
       </Link>
     </div>
   );

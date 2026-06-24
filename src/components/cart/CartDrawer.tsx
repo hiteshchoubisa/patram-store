@@ -103,15 +103,8 @@ export default function CartDrawer() {
                             )}
                           </div>
                           <div className="flex-1 min-w-0">
-                            <div className="font-medium text-gray-900 text-sm mb-1">{l.name}</div>
+                            <div className="font-medium text-gray-900 text-sm mb-1 cart-item-name">{l.name}</div>
                             <div className="flex items-center justify-between mb-2">
-                              <div className="text-sm text-gray-600">
-                                ₹{l.price.toLocaleString("en-IN")} × {l.qty}
-                              </div>
-                              <div className="font-medium text-gray-900">
-                                ₹{(l.price * l.qty).toLocaleString("en-IN")}
-                              </div>
-                            </div>
                             <div className="flex items-center space-x-2">
                               <button
                                 onClick={() => updateQty(l.id, Math.max(1, l.qty - 1))}
@@ -139,6 +132,11 @@ export default function CartDrawer() {
                                 Remove
                               </button>
                             </div>
+                              <div className="font-medium text-gray-900">
+                                ₹{(l.price * l.qty).toLocaleString("en-IN")}
+                              </div>
+                            </div>
+                            
                           </div>
                         </div>
                       </div>
@@ -158,23 +156,24 @@ export default function CartDrawer() {
             
             {lines.length > 0 && (
               <div className="cart-footer">
+               
                 <div className="cart-total">
                   <span>Total</span>
                   <span>₹{total.toLocaleString("en-IN")}</span>
                 </div>
-                <button 
-                  onClick={() => {
-                    setOpen(false); // Close cart drawer
-                    router.push("/checkout");
-                  }}
-                  disabled={lines.length === 0} 
-                  className="cart-checkout-btn"
-                >
-                  Proceed to Checkout
-                </button>
-                <button type="button" onClick={clear} className="cart-clear-btn">
-                  Clear cart
-                </button>
+                <div className="cart-footer-buttons">
+                  <button 
+                    onClick={() => {
+                      setOpen(false); // Close cart drawer
+                      router.push("/checkout");
+                    }}
+                    disabled={lines.length === 0} 
+                    className="cart-checkout-btn"
+                  >
+                    Proceed to Checkout
+                  </button>
+                
+                </div>
               </div>
             )}
           </div>

@@ -1,9 +1,10 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useCart } from "../../components/cart/CartProvider";
 import { useCustomerAuth } from "../../contexts/CustomerAuthContext";
 import { useRouter } from "next/navigation";
 import InnerBanner from "@/components/layout/InnerBanner";
+import { getShippingCost, getFreeShippingLabel, isUdaipurAddress } from "@/lib/shipping";
 
 interface CheckoutForm {
   name: string;
@@ -166,6 +167,20 @@ export default function CheckoutPage() {
   };
 
 
+  const shippingCost = useMemo(
+    () =>
+      getShippingCost({
+        subtotal: total,
+        city: form.city,
+        state: form.state,
+        address: form.address,
+        country: form.country,
+      }),
+    [total, form.city, form.state, form.address, form.country]
+  );
+
+  const orderTotal = total + shippingCost;
+
   const createOrder = async (paymentMethod: string) => {
     const orderData = {
       items: lines.map(item => ({
@@ -175,7 +190,8 @@ export default function CheckoutPage() {
         quantity: item.qty,
         price: item.price
       })),
-      total,
+      shipping: shippingCost,
+      total: orderTotal,
       customerEmail: form.email,
       shippingAddress: {
         name: form.name,
@@ -222,7 +238,7 @@ export default function CheckoutPage() {
       body: JSON.stringify({
         orderId,
         merchantOrderId,
-        amount: total,
+        amount: orderTotal,
         phone: form.phone,
       }),
     });
@@ -301,18 +317,6 @@ export default function CheckoutPage() {
     }
   };
 
-  // Check if address is in Udaipur, Rajasthan for COD eligibility
-  const isUdaipurAddress = () => {
-    const city = form.city.toLowerCase().trim();
-    const state = form.state.toLowerCase().trim();
-    const address = form.address.toLowerCase().trim();
-    
-    return (
-      (city.includes('udaipur') || address.includes('udaipur')) &&
-      (state.includes('rajasthan') || state.includes('raj'))
-    );
-  };
-
   const getAvailablePaymentMethods = () => {
     const methods: {
       id: string;
@@ -334,7 +338,7 @@ export default function CheckoutPage() {
       }
     ];
 
-    if (isUdaipurAddress()) {
+    if (isUdaipurAddress({ city: form.city, state: form.state, address: form.address })) {
       methods.push({
         id: 'cod',
         value: 'cod' as const,
@@ -601,11 +605,22 @@ export default function CheckoutPage() {
                   </div>
                   <div className="checkout-total-row">
                     <span>Shipping</span>
-                    <span className="text-green-600">Free</span>
+                    {shippingCost === 0 ? (
+                      <span className="text-green-600">
+                        {getFreeShippingLabel({
+                          subtotal: total,
+                          city: form.city,
+                          state: form.state,
+                          address: form.address,
+                        })}
+                      </span>
+                    ) : (
+                      <span>₹{shippingCost.toLocaleString("en-IN")}</span>
+                    )}
                   </div>
                   <div className="checkout-total-final">
                     <span>Total</span>
-                    <span>₹{total.toLocaleString("en-IN")}</span>
+                    <span>₹{orderTotal.toLocaleString("en-IN")}</span>
                   </div>
                   {/* Clear Cart Button */}
                   <button
@@ -662,9 +677,9 @@ export default function CheckoutPage() {
                       Processing...
                     </div>
                   ) : form.paymentMethod === "phonepe" ? (
-                    `Pay with PhonePe - ₹${total.toLocaleString("en-IN")}`
+                    `Pay with PhonePe - ₹${orderTotal.toLocaleString("en-IN")}`
                   ) : (
-                    `Place Order - ₹${total.toLocaleString("en-IN")}`
+                    `Place Order - ₹${orderTotal.toLocaleString("en-IN")}`
                   )}
                 </button>
               </div>

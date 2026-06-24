@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabaseClient";
 import { WhatsAppService } from "@/lib/whatsappService";
+import { getShippingCost } from "@/lib/shipping";
 
 interface OrderItem {
   product_id: string;
@@ -13,6 +14,7 @@ interface OrderItem {
 interface OrderData {
   items: OrderItem[];
   total: number;
+  shipping?: number;
   customerEmail: string;
   shippingAddress: {
     name: string;
@@ -60,10 +62,17 @@ export async function POST(request: NextRequest) {
       price: item.price
     }));
 
-    // Calculate total from items if not provided
-    const calculatedTotal = orderData.total || formattedItems.reduce((sum, item) => {
+    // Calculate subtotal from items
+    const subtotal = formattedItems.reduce((sum, item) => {
       return sum + (item.price * item.qty);
     }, 0);
+
+    const shippingCost = getShippingCost({
+      subtotal,
+      ...(orderData.shippingAddress ?? {}),
+    });
+
+    const calculatedTotal = subtotal + shippingCost;
 
     // Save order to Supabase using absolute minimal fields
     const orderInsertData: any = {

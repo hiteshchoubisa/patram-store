@@ -208,6 +208,8 @@ export default async function HomePage() {
                 </a>
               </div>
 
+              
+
               {/* Use carousel if many items (desktop >4, mobile >2) */}
               {items.length > 4 ? (
                 <ProductCarousel
@@ -292,6 +294,8 @@ export default async function HomePage() {
         </div>
       </section>
 
+      
+
       <JsonLd data={{
         "@context": "https://schema.org",
         "@type": "WebSite",
@@ -303,6 +307,8 @@ export default async function HomePage() {
           "query-input": "required name=search_term_string"
         }
       }} />
+      
     </>
+    
   );
 }

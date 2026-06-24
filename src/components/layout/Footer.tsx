@@ -104,6 +104,8 @@ export default function Footer() {
           <span>Handmade Aushadhi incense & attar crafted in Udaipur, Rajasthan.</span>
         </div>
       </div>
+      
     </footer>
+    
   );
 }

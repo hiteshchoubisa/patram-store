@@ -217,6 +217,13 @@ export default function PolicyPage() {
 
             <h2  className="heading2">Shipping Policy</h2>
 
+<p><strong>Free shipping</strong> is available when:</p>
+<ul>
+  <li>Your order total is ₹249 or above, or</li>
+  <li>Delivery is within Udaipur, Rajasthan</li>
+</ul>
+<p><strong>₹49 flat shipping</strong> applies to all other orders across India.</p>
+
 <p>Orders are typically processed within 1-3 business days.</p>
 
 <h3>Delivery Time</h3>
