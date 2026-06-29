@@ -1,5 +1,5 @@
 export const SHIPPING_COST_INDIA = 49;
-export const FREE_SHIPPING_MIN_ORDER = 249;
+export const FREE_SHIPPING_MIN_ORDER = 199;
 
 export interface ShippingAddressInput {
   city?: string;

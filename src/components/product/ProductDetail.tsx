@@ -177,7 +177,7 @@ export default function ProductDetail({ product, relatedProducts = [] }: Product
                     </svg>
                   </div>
                   <h4 className="font-semibold text-gray-900">Shipping</h4>
-                  <p className="text-sm text-gray-500">Free above ₹249 · Free in Udaipur · else ₹49</p>
+                  <p className="text-sm text-gray-500">Free above 199 · Free in Udaipur · else ₹49</p>
                 </div>
                 <div className="text-center">
                   <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-2">

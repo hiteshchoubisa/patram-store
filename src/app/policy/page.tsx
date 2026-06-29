@@ -219,7 +219,7 @@ export default function PolicyPage() {
 
 <p><strong>Free shipping</strong> is available when:</p>
 <ul>
-  <li>Your order total is ₹249 or above, or</li>
+  <li>Your order total is ₹199 or above, or</li>
   <li>Delivery is within Udaipur, Rajasthan</li>
 </ul>
 <p><strong>₹49 flat shipping</strong> applies to all other orders across India.</p>

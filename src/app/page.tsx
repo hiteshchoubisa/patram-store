@@ -280,12 +280,12 @@ export default async function HomePage() {
              Experience fragrance like never before with our exclusive membership program, designed especially for our loyal and valuable customers.
               </p>
        
-       <ul>
-        <li>We Provide <strong>Free Samples</strong> of All Products to our members.</li>
-        <li>Up to <strong>15% Discounts</strong> on every Purchase.</li>
-        <li><strong>Customize</strong> Incense as per Requirements.</li>
-        <li>On Demand costing <strong>Saving Plan</strong>.</li>
-        <li>Festive <strong>offers</strong> & surprise <strong>gifts</strong></li>
+       <ul className="icon-lists">
+        <li><i><Image src="/icon-free.svg" alt="Free Samples"  width={26} height={26}/></i> Get <strong>Free Samples</strong> of All Products</li>
+        <li><i><Image src="/icon-discount.svg" alt="Extra Discount "  width={24} height={24}/></i>Enjoy Up to <strong>15% Discount Extra Discount</strong>  on Every Purchase</li>
+        <li><i><Image src="/icon-custom.svg" alt="Customize Incense"  width={24} height={24}/></i><strong>Customize Incense</strong> as per Requirements</li>
+        <li><i><Image src="/icon-save.svg" alt="Cost-Saving"  width={24} height={24}/></i>On-Demand <strong>Cost-Saving</strong>  Benefits </li>
+        <li><i><Image src="/icon-gift.svg" alt="Free Gifts"  width={24} height={24}/></i>Receive Exclusive <strong>Festive Offers & Surprise Gifts</strong> <small>T&C apply</small></li>
        </ul>
                
             </div>

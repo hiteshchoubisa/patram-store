@@ -65,7 +65,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <div
         
         className="group flex items-center gap-2 bg-red-500 text-white px-2 py-2 rounded-full shadow-lg "
-      > <span className="text-xs">Free Shipping + Samples on Orders above ₹249/-</span>
+      > <span className="text-xs">Free Shipping + Samples on Orders above ₹199/-</span>
        
       </div>
     </div>
